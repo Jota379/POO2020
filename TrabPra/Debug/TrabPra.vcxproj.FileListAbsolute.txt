@@ -1,0 +1,2 @@
+E:\aulas\POO\TrabPra\Debug\TrabPra.exe
+E:\aulas\POO\TrabPra\Debug\TrabPra.pdb
