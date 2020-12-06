@@ -1,0 +1,8 @@
+cria Mina 3
+cria Castelo 1
+cria Fortaleza 5
+cria Duna 4
+cria Pescaria 3
+cria RefugioPirata 2
+cria Montanha 1
+cria Planicie 2

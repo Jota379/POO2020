@@ -1,4 +1,6 @@
-﻿  Continentes.cpp
-  Ilha.cpp
-  Generating Code...
+﻿  TrabPra.cpp
+E:\aulas\POO\TrabPra\TrabPra.cpp(13,12): warning C4101: 'f': unreferenced local variable
+E:\aulas\POO\TrabPra\TrabPra.cpp(13,9): warning C4101: 'i': unreferenced local variable
+E:\aulas\POO\TrabPra\TrabPra.cpp(296,12): warning C4101: 'f': unreferenced local variable
+E:\aulas\POO\TrabPra\TrabPra.cpp(296,9): warning C4101: 'i': unreferenced local variable
   TrabPra.vcxproj -> E:\aulas\POO\TrabPra\Debug\TrabPra.exe
