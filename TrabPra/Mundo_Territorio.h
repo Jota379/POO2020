@@ -24,6 +24,7 @@ public:
 
     //funções set 
     void setNomeTerritorio(string nome_territorio);
+    void setConquista();
 
     //funções get
     string getNometerritorio() const;
@@ -33,13 +34,14 @@ public:
     int getPontosVitoria() const;
     bool getConquista() const;
     string getAsString() const;
+    string getConquistaString() const;
     ~Mundo_Territorios();
 
 };
 
 class Territorio_Inicial : public Mundo_Territorios { // Define um tipo de território
 public:
-    Territorio_Inicial(string nome = "Territorio Inicial", int resistencia = 9, int produtos = 1, int ouro = 1, int pontos_vitoria = 0); //construtor com parametros
+    Territorio_Inicial(string nome = "TerritorioInicial", int resistencia = 9, int produtos = 1, int ouro = 1, int pontos_vitoria = 0, bool conquistado = true); //construtor com parametros
 
     ~Territorio_Inicial() { // destrutor
     };

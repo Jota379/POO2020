@@ -3,11 +3,138 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include<cstdlib>
+#include<ctime>
 #include "Mundo_Territorio.h"
 #include "Continentes.h"
 #include "Ilha.h"
 
 using namespace std;
+
+void mostra_menu() {
+    cout << "1. Conquistar / Passar" << endl;
+    cout << "2. Recolha de Produtos ou ouro" << endl;
+    cout << "3. Compra de unidades militares e de tecnologia" << endl;
+    cout << "4. Ocorrência de um evento" << endl;
+    cout << "5. Lista" << endl;
+    cout << "0. Sair" << endl;
+    return;
+}
+
+vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int& sorte,int& força_militar){
+    system("cls");
+    int esc;
+    ostringstream oss;
+    string terrPretendido;
+    bool turno_terminado=false;
+    srand(time(NULL));
+    
+
+    while (!turno_terminado) {
+        bool existe = false; // verifica se o territorio existe
+        cout << "FORCA MILITAR:" << força_militar << "\tFATOR SORTE: " << sorte << endl;
+        cout << "1: Listar" << endl;
+        cout << "2: Conquistar" << endl;
+        cout << "3: Passar Turno" << endl;
+        cin >> esc;
+        switch (esc) {
+        case 1:
+            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOSDEVITORIA\tCONQUISTADO" << endl;
+            for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
+                oss << jogo[i]->getAsString();
+            cout << oss.str();
+            break;
+        case 2:
+            cout << "Escreva o nome do territorio Pretendido ->";
+            cin >> terrPretendido;
+            for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                if (terrPretendido == jogo[i]->getNometerritorio()) {
+                    sorte = rand() % 6 + 1;
+                    cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
+                    if ((sorte+força_militar)>=jogo[i]->getResistencia())
+                    {
+                        jogo[i]->setConquista();
+                        cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                        existe = true;
+                    }
+                    else
+                    {
+                        cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
+                        if(força_militar>0)
+                            força_militar--;
+                    }
+                }
+            }
+            if (!existe)
+            {
+                cout << "Territorio Não Exite" << endl;
+            }
+            turno_terminado = true;
+            break;
+        case 3:
+
+            turno_terminado = true;
+            break;
+        }
+    }
+    return jogo;
+}
+
+void escrita_menus(vector<Mundo_Territorios*> jogo) {
+    system("cls");
+
+    int escolha;
+    int turno = 1, ano = 1;
+    ostringstream oss;
+
+    srand(time(NULL));
+    int força_militar = rand() % 4;
+    int sorte = 0;
+
+    while(1) {
+
+        if(turno%6==0){
+            ano++;
+        }
+        cout << "ANO: " << ano << endl;
+        cout << "TURNO: " << turno << endl;
+        cout << "FORÇA MILITAR: " << força_militar << endl;
+        cout << "ULTIMA SORTE: " << sorte << endl;
+
+        mostra_menu();
+        cin >> escolha;
+
+        switch (escolha)
+        {
+        case 1:
+            cout << "O jogador pode escolher uma das seguintes opções:" << endl;
+            jogo = conquistar_passar(jogo,sorte,força_militar);
+            turno++;
+            break;
+        case 2:
+            cout << "Recolhe os produtos dos territorios conquistados" << endl;
+            break;
+        case 3:
+            cout << "Aumentar as forças militares" << endl;
+            break;
+        case 4:
+            cout << "Ah um evento" << endl;
+            break;
+        case 5:
+            for (unsigned int i = 0; i < jogo.size(); i++) // listar todos 
+                oss << jogo[i]->getAsString();
+            cout << oss.str();
+            break;
+        case 0:
+            exit(0);
+        }
+    }
+}
+
+ void comeca_jogo(vector<Mundo_Territorios*> jogo) {
+    cout << "Entrou no jogo" << endl;
+    escrita_menus(jogo);
+}
 
 vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontanha,int&idFortaleza,int&idMina,int&idDuna,int&idCastelo,int&idRefugioPirata,int&idPescaria) {
     int i, f, maxr = 1;
@@ -16,12 +143,15 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
 
     ifstream myFile(nomefich);
 
-
     vector<Mundo_Territorios*> jogo;
 
     string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, tipoTerritorio, rep, lixo;
+    
+    if (!myFile.is_open()) {
+        cout << "Ficheiro nao existe, nada foi carregado" << endl;
+        return jogo;
+    }
 
-    cout << "Lista de comandos:\n\tcarrega <nome_ficheiro>\n\tcria <Tipo_de_Territorio> <numero_de_vezes>\n\tlista\n\tsair\n\n";
 
     while (getline(myFile, cmd))
     {
@@ -37,30 +167,7 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                 if (copia == "cria")
                 {
                     bufi >> tipoTerritorio;
-                    /*
-                    if (tipoTerritorio == "territorio")
-                    {
-                       if (bufi >> rep) {
-                            try
-                            {
-                                    maxr = stoi(rep, nullptr, 10);
 
-                                    while (maxr >= 1) {
-                                        push//criat();
-
-                                        cout << "executei o cria territorio \n";
-                                        maxr--;
-                                    }
-                                    maxr = 1;
-                            }
-                            catch (const invalid_argument)
-                            {
-                                cout << "utilise um inteiro \n";
-                                maxr = 1;
-                            }
-                        }
-                    }
-                    */
                     if (tipoTerritorio == "RefugioPirata")
                     {
                         if (bufi >> rep) {
@@ -301,7 +408,7 @@ int comandline() {
 
     string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, nomefich, tipoTerritorio, rep, lixo;
 
-    cout << "Lista de comandos:\n\tcarrega <nome_ficheiro>\n\tcria <Tipo_de_Territorio> <numero_de_vezes>\n\tlista\n\tsair\n\n";
+    cout << "Lista de comandos:\n\tcarrega <nome_ficheiro>\n\tcria <Tipo_de_Territorio> <numero_de_vezes>\n\tlista\n\tavanca\n\tsair\n\n";
 
     for (;;)
     {
@@ -330,30 +437,7 @@ int comandline() {
                 if (copia == "cria")
                 {
                     bufi >> tipoTerritorio;
-                    /*
-                    if (tipoTerritorio == "territorio")
-                    {
-                       if (bufi >> rep) {
-                            try
-                            {
-                                    maxr = stoi(rep, nullptr, 10);
 
-                                    while (maxr >= 1) {
-                                        push//criat();
-
-                                        cout << "executei o cria territorio \n";
-                                        maxr--;
-                                    }
-                                    maxr = 1;
-                            }
-                            catch (const invalid_argument)
-                            {
-                                cout << "utilise um inteiro \n";
-                                maxr = 1;
-                            }
-                        }
-                    }
-                    */
                     if (tipoTerritorio == "RefugioPirata")
                     {
                         if (bufi >> rep) {
@@ -566,18 +650,22 @@ int comandline() {
                         //lista();
                     }
                     else
-                        //|comando para entrar no modo 2| cmdCamp(bufi,str);
-                        if (copia == "sair")
-                        {
-                            return 0;
+                        if (copia == "avanca") {
+                            jogo.push_back(new Territorio_Inicial());
+                            comeca_jogo(jogo);
                         }
                         else
-                        {
-                            cout << "\tO comando não existe" << endl;
-                            while (bufi >> lixo)
+                            //|comando para entrar no modo 2| cmdCamp(bufi,str);
+                            if (copia == "sair")
                             {
+                                return 0;
                             }
-                        }
+                                else
+                                    cout << "\tO comando nao existe" << endl;
+                                    while (bufi >> lixo)
+                                    {
+                                    }
+                                
         }
     }
     return 0;
