@@ -142,7 +142,7 @@
     <ClCompile Include="Continentes.cpp" />
     <ClCompile Include="Ilha.cpp" />
     <ClCompile Include="Mundo_Territorio.cpp" />
-    <ClCompile Include="TrabPra.cpp" />
+    <ClCompile Include="Interacao.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Continentes.h" />

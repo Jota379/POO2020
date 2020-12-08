@@ -1,12 +1,8 @@
-﻿  Continentes.cpp
-  Ilha.cpp
-  Mundo_Territorio.cpp
-  TrabPra.cpp
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(30,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(91,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(141,12): warning C4101: 'f': unreferenced local variable
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(141,9): warning C4101: 'i': unreferenced local variable
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(427,12): warning C4101: 'f': unreferenced local variable
-E:\trabPOO2020\POO2020\TrabPra\TrabPra.cpp(427,9): warning C4101: 'i': unreferenced local variable
-  Generating Code...
+﻿  Interacao.cpp
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(30,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(101,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(151,12): warning C4101: 'f': unreferenced local variable
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(151,9): warning C4101: 'i': unreferenced local variable
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(414,12): warning C4101: 'f': unreferenced local variable
+E:\trabPOO2020\POO2020\TrabPra\Interacao.cpp(414,9): warning C4101: 'i': unreferenced local variable
   TrabPra.vcxproj -> E:\trabPOO2020\POO2020\TrabPra\Debug\TrabPra.exe
