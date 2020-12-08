@@ -381,17 +381,14 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                     }
                 }
                 else
-                    // <NomeFicheiro> vai buscar os carros ao ficheiro("capacidadeInicial capacidadeMaxima marca modelo")
                     if (copia == "lista")
                     {
                         cout << "executei o Lista \n";
                         for (unsigned int i = 0; i < jogo.size(); i++)
                             oss << jogo[i]->getAsString();
                         cout << oss.str();
-                        //lista();
                     }
                     else
-                        //|comando para entrar no modo 2| cmdCamp(bufi,str);
                         if (copia == "sair")
                         {
                             return jogo;
@@ -444,7 +441,6 @@ int comandline() {
                 jogo = carregar(nomefich,idPlanicie, idMontanha, idFortaleza, idMina, idDuna, idCastelo, idRefugioPirata, idPescaria);
             }
             else
-                // <NomeFicheiro> vai buscar pilotos ao ficheiro ("tipo nome")
                 if (copia == "cria")
                 {
                     bufi >> tipoTerritorio;
@@ -651,14 +647,14 @@ int comandline() {
                     }
                 }
                 else
-                    // <NomeFicheiro> vai buscar os carros ao ficheiro("capacidadeInicial capacidadeMaxima marca modelo")
+
                     if (copia == "lista")
                     {
                         cout << "executei o Lista \n";
                         for (unsigned int i = 0; i < jogo.size(); i++)
                             oss << jogo[i]->getAsString();
                         cout << oss.str();
-                        //lista();
+
                     }
                     else
                         if (copia == "avanca") {
@@ -666,7 +662,7 @@ int comandline() {
                             comeca_jogo(jogo);
                         }
                         else
-                            //|comando para entrar no modo 2| cmdCamp(bufi,str);
+
                             if (copia == "sair")
                             {
                                 return 0;
