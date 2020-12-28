@@ -27,6 +27,9 @@
     <ClCompile Include="Interacao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tecnologias.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mundo_Territorio.h">
@@ -36,6 +39,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Continentes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interacao.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tecnologias.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

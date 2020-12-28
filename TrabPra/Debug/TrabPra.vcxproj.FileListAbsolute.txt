@@ -2,3 +2,5 @@ E:\aulas\POO\TrabPra\Debug\TrabPra.exe
 E:\aulas\POO\TrabPra\Debug\TrabPra.pdb
 E:\trabPOO2020\POO2020\TrabPra\Debug\TrabPra.exe
 E:\trabPOO2020\POO2020\TrabPra\Debug\TrabPra.pdb
+C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Debug\TrabPra.exe
+C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Debug\TrabPra.pdb

@@ -3,8 +3,8 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include<cstdlib>
-#include<ctime>
+#include <cstdlib>
+#include <ctime>
 #include "Mundo_Territorio.h"
 #include "Continentes.h"
 #include "Ilha.h"
@@ -27,7 +27,7 @@ vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int
     ostringstream oss;
     string terrPretendido;
     bool turno_terminado=false;
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     
 
     while (!turno_terminado) {
@@ -39,7 +39,7 @@ vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int
         cin >> esc;
         switch (esc) {
         case 1:
-            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOSDEVITORIA\tCONQUISTADO" << endl;
+            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
             for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
                 oss << jogo[i]->getAsString();
             cout << oss.str();
@@ -98,7 +98,7 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
     int turno = 1, ano = 1;
     ostringstream oss;
 
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     int força_militar = rand() % 4;
     int sorte = 0;
 
@@ -124,12 +124,17 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
             break;
         case 2:
             cout << "Recolhe os produtos dos territorios conquistados" << endl;
+            //turno++;
             break;
         case 3:
             cout << "Aumentar as forças militares" << endl;
+            // chamar funçao que permite escolher entre obter tecnologias ou aumentar força militar
+            //turno++;
             break;
         case 4:
             cout << "Ah um evento" << endl;
+            //chamar funçao que atribui aleatóriamente um evento(Recurso abandonado/ invasao) e termina o turno
+            //turno++;
             break;
         case 5:
             for (unsigned int i = 0; i < jogo.size(); i++) // listar todos 
@@ -142,13 +147,13 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
     }
 }
 
- void comeca_jogo(vector<Mundo_Territorios*> jogo) {
+void comeca_jogo(vector<Mundo_Territorios*> jogo) {
     cout << "Entrou no jogo" << endl;
     escrita_menus(jogo);
 }
 
 vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontanha,int&idFortaleza,int&idMina,int&idDuna,int&idCastelo,int&idRefugioPirata,int&idPescaria) {
-    int i, f, maxr = 1;
+    int maxr = 1;
 
     string cmd;
 
@@ -408,7 +413,7 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
 
 
 int comandline() {
-    int i, f, maxr = 1;
+    int maxr = 1;
 
     string cmd;
 
