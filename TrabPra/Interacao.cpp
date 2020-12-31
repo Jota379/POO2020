@@ -8,10 +8,11 @@
 #include "Mundo_Territorio.h"
 #include "Continentes.h"
 #include "Ilha.h"
+#include "Interacao.h"
 
 using namespace std;
 
-void mostra_menu() {
+void Interacao::mostra_menu()const{
     cout << "1. Conquistar / Passar" << endl;
     cout << "2. Recolha de Produtos ou ouro" << endl;
     cout << "3. Compra de unidades militares e de tecnologia" << endl;

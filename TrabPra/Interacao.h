@@ -11,7 +11,7 @@ private:
 
 public:
 	int comandline();
-	void mostra_menu();
+	void mostra_menu()const;
 	void escrita_menus(vector<Mundo_Territorios*> jogo);
 
 };
