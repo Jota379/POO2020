@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Continentes.cpp" />
     <ClCompile Include="Ilha.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mundo_Territorio.cpp" />
     <ClCompile Include="Interacao.cpp" />
     <ClCompile Include="Tecnologias.cpp" />

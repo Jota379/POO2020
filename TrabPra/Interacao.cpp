@@ -5,12 +5,16 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include "Interacao.h"
 #include "Mundo_Territorio.h"
 #include "Continentes.h"
 #include "Ilha.h"
-#include "Interacao.h"
 
 using namespace std;
+
+Interacao::Interacao(){
+    força_militar = rand() % 4;
+}
 
 void Interacao::mostra_menu()const{
     cout << "1. Conquistar / Passar" << endl;
@@ -22,12 +26,13 @@ void Interacao::mostra_menu()const{
     return;
 }
 
-vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int& sorte,int& força_militar){
+void Interacao::conquistar_passar(){
     system("cls");
     int esc;
     ostringstream oss;
     string terrPretendido;
     bool turno_terminado=false;
+    int sorte = 0;
     srand((unsigned int)time(NULL));
     
 
@@ -50,8 +55,6 @@ vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int
             cin >> terrPretendido;
             for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
                 if (terrPretendido == jogo[i]->getNometerritorio()) {
-                    sorte = rand() % 6 + 1;
-                    cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
                     existe = true;
                     if (jogo[i]->getConquista() == false) {
                         sorte = rand() % 6 + 1;
@@ -62,7 +65,7 @@ vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int
                         break;
                     }
                     else if ((sorte+força_militar)>=jogo[i]->getResistencia())
-                            {
+                           {
                         jogo[i]->setConquista();
                         cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
                         turno_terminado = true;
@@ -89,18 +92,23 @@ vector<Mundo_Territorios*> conquistar_passar(vector<Mundo_Territorios*> jogo,int
             break;
         }
     }
-    return jogo;
 }
 
-void escrita_menus(vector<Mundo_Territorios*> jogo) {
+void Interacao::obter_força_militar() {
+
+}
+
+void Interacao::obter_tecnologias() {
+
+}
+
+void Interacao::escrita_menus() {
     system("cls");
 
-    int escolha;
-    int turno = 1, ano = 1;
     ostringstream oss;
+    int escolha;
 
     srand((unsigned int)time(NULL));
-    int força_militar = rand() % 4;
     int sorte = 0;
 
     while(1) {
@@ -120,7 +128,7 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
         {
         case 1:
             cout << "O jogador pode escolher uma das seguintes opções:" << endl;
-            jogo = conquistar_passar(jogo,sorte,força_militar);
+            conquistar_passar();
             turno++;
             break;
         case 2:
@@ -130,6 +138,7 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
         case 3:
             cout << "Aumentar as forças militares" << endl;
             // chamar funçao que permite escolher entre obter tecnologias ou aumentar força militar
+            obter_força_militar();
             //turno++;
             break;
         case 4:
@@ -138,6 +147,7 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
             //turno++;
             break;
         case 5:
+            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
             for (unsigned int i = 0; i < jogo.size(); i++) // listar todos 
                 oss << jogo[i]->getAsString();
             cout << oss.str();
@@ -148,25 +158,23 @@ void escrita_menus(vector<Mundo_Territorios*> jogo) {
     }
 }
 
-void comeca_jogo(vector<Mundo_Territorios*> jogo) {
+void Interacao::comeca_jogo() {
     cout << "Entrou no jogo" << endl;
-    escrita_menus(jogo);
+    escrita_menus();
 }
 
-vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontanha,int&idFortaleza,int&idMina,int&idDuna,int&idCastelo,int&idRefugioPirata,int&idPescaria) {
+void Interacao::carregar(string nomefich) {
     int maxr = 1;
 
     string cmd;
 
     ifstream myFile(nomefich);
 
-    vector<Mundo_Territorios*> jogo;
-
     string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, tipoTerritorio, rep, lixo;
     
     if (!myFile.is_open()) {
         cout << "Ficheiro nao existe, nada foi carregado" << endl;
-        return jogo;
+        return;
     }
 
 
@@ -175,7 +183,6 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
         cout << cmd << endl;
         istringstream bufi(cmd);
         ostringstream oss;
-        ostringstream Aindex;
         string nome;
 
         while (bufi >> str)
@@ -193,11 +200,7 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "RefugioPirata" << idRefugioPirata;
-                                    nome = passanome.str();
-                                    idRefugioPirata++;
-                                    jogo.push_back(new Refugio_Pirata(nome));
+                                    jogo.push_back(new Refugio_Pirata());
                                     cout << "executei o cria ilha \n";
                                     maxr--;
                                 }
@@ -218,11 +221,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Pescaria" << idPescaria;
-                                    nome = passanome.str();
-                                    idPescaria++;
-                                    jogo.push_back(new Pescaria(nome));
+                                    
+                                    jogo.push_back(new Pescaria());
                                     cout << "executei o cria ilha \n";
                                     maxr--;
                                 }
@@ -242,12 +242,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                             {
                                 maxr = stoi(rep, nullptr, 10);
 
-                                while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Planicie" << idPlanicie;
-                                    nome = passanome.str();
-                                    idPlanicie++;
-                                    jogo.push_back(new Planicie(nome));
+                                while (maxr >= 1) {                                    
+                                    jogo.push_back(new Planicie());
                                     cout << "executei o cria planicie \n";
                                     maxr--;
                                 }
@@ -268,11 +264,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Castelo" << idCastelo;
-                                    nome = passanome.str();
-                                    idCastelo++;
-                                    jogo.push_back(new Castelo(nome));
+                                   
+                                    jogo.push_back(new Castelo());
                                     cout << "executei o cria castelo \n";
                                     maxr--;
                                 }
@@ -293,11 +286,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Fortaleza" << idFortaleza;
-                                    nome = passanome.str();
-                                    idFortaleza++;
-                                    jogo.push_back(new Fortaleza(nome));
+
+                                    jogo.push_back(new Fortaleza());
                                     cout << "executei o cria fortaleza \n";
                                     maxr--;
                                 }
@@ -318,11 +308,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Duna" << idDuna;
-                                    nome = passanome.str();
-                                    idDuna++;
-                                    jogo.push_back(new Duna(nome));
+                                    
+                                    jogo.push_back(new Duna());
                                     cout << "executei o cria duna \n";
                                     maxr--;
                                 }
@@ -343,11 +330,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Mina" << idMina;
-                                    nome = passanome.str();
-                                    idMina++;
-                                    jogo.push_back(new Mina(nome));
+                                    
+                                    jogo.push_back(new Mina());
                                     cout << "executei o cria mina \n";
                                     maxr--;
                                 }
@@ -368,11 +352,8 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Montanha" << idMontanha;
-                                    nome = passanome.str();
-                                    idMontanha++;
-                                    jogo.push_back(new Montanha(nome));
+                                    
+                                    jogo.push_back(new Montanha());
                                     cout << "executei o cria montanha \n";
                                     maxr--;
                                 }
@@ -390,6 +371,7 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                     if (copia == "lista")
                     {
                         cout << "executei o Lista \n";
+                        cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
                         for (unsigned int i = 0; i < jogo.size(); i++)
                             oss << jogo[i]->getAsString();
                         cout << oss.str();
@@ -397,7 +379,7 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                     else
                         if (copia == "sair")
                         {
-                            return jogo;
+                            exit(0);
                         }
                         else
                         {
@@ -409,16 +391,14 @@ vector<Mundo_Territorios*> carregar(string nomefich,int& idPlanicie,int&idMontan
                         }
         }
     }
-    return jogo;
+    return;
 }
 
 
-int comandline() {
+int Interacao::comandline() {
     int maxr = 1;
 
     string cmd;
-
-    vector<Mundo_Territorios*> jogo;
 
     string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, nomefich, tipoTerritorio, rep, lixo;
 
@@ -433,9 +413,6 @@ int comandline() {
 
         istringstream bufi(cmd);
         ostringstream oss;
-        ostringstream Aindex;
-        static int idPlanicie = 1, idMontanha = 1, idFortaleza = 1, idMina = 1, idDuna = 1, idCastelo = 1, idRefugioPirata = 1, idPescaria = 1;
-        string nome;
 
         while (bufi >> str)
         {
@@ -444,7 +421,7 @@ int comandline() {
             {
                 bufi >> nomefich;
                 cout << "executei o carrega " << nomefich << endl;
-                jogo = carregar(nomefich,idPlanicie, idMontanha, idFortaleza, idMina, idDuna, idCastelo, idRefugioPirata, idPescaria);
+                carregar(nomefich);
             }
             else
                 if (copia == "cria")
@@ -459,11 +436,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "RefugioPirata" << idRefugioPirata;
-                                    nome = passanome.str();
-                                    idRefugioPirata++;
-                                    jogo.push_back(new Refugio_Pirata(nome));
+                                    jogo.push_back(new Refugio_Pirata());
                                     cout << "executei o cria ilha \n";
                                     maxr--;
                                 }
@@ -484,11 +457,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Pescaria" << idPescaria;
-                                    nome = passanome.str();
-                                    idPescaria++;
-                                    jogo.push_back(new Pescaria(nome));
+                                    jogo.push_back(new Pescaria());
                                     cout << "executei o cria ilha \n";
                                     maxr--;
                                 }
@@ -509,11 +478,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Planicie" << idPlanicie;
-                                    nome = passanome.str();
-                                    idPlanicie++;
-                                    jogo.push_back(new Planicie(nome));
+                                    jogo.push_back(new Planicie());
                                     cout << "executei o cria planicie \n";
                                     maxr--;
                                 }
@@ -534,11 +499,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Castelo" << idCastelo;
-                                    nome = passanome.str();
-                                    idCastelo++;
-                                    jogo.push_back(new Castelo(nome));
+                                    jogo.push_back(new Castelo());
                                     cout << "executei o cria castelo \n";
                                     maxr--;
                                 }
@@ -559,11 +520,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Fortaleza" << idFortaleza;
-                                    nome = passanome.str();
-                                    idFortaleza++;
-                                    jogo.push_back(new Fortaleza(nome));
+                                    jogo.push_back(new Fortaleza());
                                     cout << "executei o cria fortaleza \n";
                                     maxr--;
                                 }
@@ -584,11 +541,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Duna" << idDuna;
-                                    nome = passanome.str();
-                                    idDuna++;
-                                    jogo.push_back(new Duna(nome));
+                                    jogo.push_back(new Duna());
                                     cout << "executei o cria duna \n";
                                     maxr--;
                                 }
@@ -609,11 +562,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Mina" << idMina;
-                                    nome = passanome.str();
-                                    idMina++;
-                                    jogo.push_back(new Mina(nome));
+                                    jogo.push_back(new Mina());
                                     cout << "executei o cria mina \n";
                                     maxr--;
                                 }
@@ -634,11 +583,7 @@ int comandline() {
                                 maxr = stoi(rep, nullptr, 10);
 
                                 while (maxr >= 1) {
-                                    ostringstream passanome;
-                                    passanome << "Montanha" << idMontanha;
-                                    nome = passanome.str();
-                                    idMontanha++;
-                                    jogo.push_back(new Montanha(nome));
+                                    jogo.push_back(new Montanha());
                                     cout << "executei o cria montanha \n";
                                     maxr--;
                                 }
@@ -657,6 +602,7 @@ int comandline() {
                     if (copia == "lista")
                     {
                         cout << "executei o Lista \n";
+                        cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
                         for (unsigned int i = 0; i < jogo.size(); i++)
                             oss << jogo[i]->getAsString();
                         cout << oss.str();
@@ -665,7 +611,7 @@ int comandline() {
                     else
                         if (copia == "avanca") {
                             jogo.push_back(new Territorio_Inicial());
-                            comeca_jogo(jogo);
+                            comeca_jogo();
                         }
                         else
 
@@ -682,9 +628,4 @@ int comandline() {
         }
     }
     return 0;
-}
-
-
-int main() {
-    comandline();
 }

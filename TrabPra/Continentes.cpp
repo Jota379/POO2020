@@ -4,7 +4,13 @@
 
 using namespace std;
 
+int Planicie::idPlanicie = 0;
+
 Planicie::Planicie(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idPlanicie++;
+    ostringstream passanome;
+    passanome << "Planicie" << idPlanicie;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
@@ -16,7 +22,13 @@ Planicie::~Planicie() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Montanha::idMontanha = 0;
+
 Montanha::Montanha(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idMontanha++;
+    ostringstream passanome;
+    passanome << "Montanha" << idMontanha;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
@@ -29,7 +41,13 @@ Montanha::~Montanha() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Fortaleza::idFortaleza = 0;
+
 Fortaleza::Fortaleza(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idFortaleza++;
+    ostringstream passanome;
+    passanome << "Fortaleza" << idFortaleza;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
@@ -42,7 +60,13 @@ Fortaleza::~Fortaleza() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Mina::idMina = 0;
+
 Mina::Mina(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idMina++;
+    ostringstream passanome;
+    passanome << "Mina" << idMina;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
@@ -55,7 +79,13 @@ Mina::~Mina() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Duna::idDuna = 0;
+
 Duna::Duna(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idDuna++;
+    ostringstream passanome;
+    passanome << "Duna" << idDuna;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
@@ -68,7 +98,13 @@ Duna::~Duna() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Castelo::idCastelo = 0;
+
 Castelo::Castelo(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
+    idCastelo++;
+    ostringstream passanome;
+    passanome << "Castelo" << idCastelo;
+    nome = passanome.str();
     this->resistencia = resistencia;
     this->produtos = produtos;
     this->ouro = ouro;
