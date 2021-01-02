@@ -26,20 +26,25 @@ bool Tecnologias::getBancoCentral() const {
 
 bool Tecnologias::setDronesMilitares(){
 	drones_Militares = true;
+	return drones_Militares;
 }
 
 bool Tecnologias::setMisseisTeleguiados(){
 	missies_Teleguiados = true;
+	return missies_Teleguiados;
 }
 
 bool Tecnologias::setDefesasTerritoriais(){
 	defesas_Territoriais = true;
+	return defesas_Territoriais;
 }
 
 bool Tecnologias::setBolsaValores(){
 	bolsa_Valores = true;
+	return bolsa_Valores;
 }
 
 bool Tecnologias::setBancoCentral(){
 	banco_Central = true;
+	return banco_Central;
 }

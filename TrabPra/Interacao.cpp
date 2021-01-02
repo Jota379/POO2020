@@ -26,49 +26,195 @@ void Interacao::mostra_menu()const{
     return;
 }
 
-void Interacao::conquistar_passar(){
+
+void Interacao::mostra_comandos_CP(){
+
+    cout << "=====Fase Conquistar/Passar====="
+        << "Comandos:" << endl
+        << "\tconquista <nomeTerritorio> ;" << endl
+        << "\tpassa ; usa este comando para não conquistar nenhum territorio" << endl
+        << "\tlista < | nometerritorio | meus> ; caso não meta nome de territorio lista tudo, caso utilize o 'meus' lista os territorios conquistados" << endl
+        << "\tavanca ; passa à proxima fase" << endl
+        << "\tgrava <nome>" << endl
+        << "\tativa <nome>" << endl
+        << "\tapaga <nome>" << endl
+        << "======CHEATS/DEBUG=====" << endl
+        << "\ttoma <qual> <nome>" << endl
+        << "\tmodifica <ouro | prod> N" << endl
+        << "\tfevento <nome-evento>" << endl;
+}
+
+void Interacao::mostra_comandos_RP(){
+    cout << "=====Fase Recolha de Produtos e Ouro=====" << endl
+        << "Comandos:" << endl
+        << "\tmaisprod ;" << endl
+        << "\tmais ouro;" << endl
+        << "\tlista < | nometerritorio | meus> ; caso não meta nome de territorio lista tudo, caso utilize o 'meus' lista os territorios conquistados" << endl
+        << "\tavanca ; passa à proxima fase" << endl
+        << "\tgrava <nome>" << endl
+        << "\tativa <nome>" << endl
+        << "\tapaga <nome>" << endl
+        << "======CHEATS/DEBUG=====" << endl
+        << "\ttoma <qual> <nome>" << endl
+        << "\tmodifica <ouro | prod> N" << endl
+        << "\tfevento <nome-evento>" << endl;
+}
+
+void Interacao::mostra_comandos_CUMT(){
+    cout << "=====Fase Forca Militar | Tecnologias====="
+        << "Comandos:" << endl
+        << "\tadquire <tipo>;" << endl
+        << "\tmaismilitar;" << endl
+        << "\tlista < | nometerritorio | meus> ; caso não meta nome de territorio lista tudo, caso utilize o 'meus' lista os territorios conquistados" << endl
+        << "\tavanca ; passa à proxima fase" << endl
+        << "\tgrava <nome>" << endl
+        << "\tativa <nome>" << endl
+        << "\tapaga <nome>" << endl
+        << "======CHEATS/DEBUG=====" << endl
+        << "\ttoma <qual> <nome>" << endl
+        << "\tmodifica <ouro | prod> N" << endl
+        << "\tfevento <nome-evento>" << endl;
+}
+
+void Interacao::mostra_comandos_FE() {
+
+    cout << "=====Fase Eventos====="
+        << "Comandos:" << endl
+        << "\tlista < | nometerritorio | meus> ; caso nao meta nome de territorio lista tudo, caso utilize o 'meus' lista os territorios conquistados" << endl
+        << "\tavanca ; passa à proxima fase" << endl
+        << "\tgrava <nome>" << endl
+        << "\tativa <nome>" << endl
+        << "\tapaga <nome>" << endl
+        << "======CHEATS/DEBUG=====" << endl
+        << "\ttoma <qual> <nome>" << endl
+        << "\tmodifica <ouro | prod> N" << endl
+        << "\tfevento <nome-evento>" << endl;
+}
+
+void Interacao::conquistar(){
     system("cls");
     int esc;
     ostringstream oss;
     string terrPretendido;
-    bool turno_terminado=false;
-    int sorte = 0;
     srand((unsigned int)time(NULL));
-    
+    bool existe = false; // verifica se o territorio existe
 
-    while (!turno_terminado) {
-        bool existe = false; // verifica se o territorio existe
-        cout << "FORCA MILITAR:" << força_militar << "\tULTIMA SORTE: " << sorte << endl;
-        cout << "1: Listar" << endl;
-        cout << "2: Conquistar" << endl;
-        cout << "3: Passar Turno" << endl;
-        cin >> esc;
-        switch (esc) {
-        case 1:
-            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
-            for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
-                oss << jogo[i]->getAsString();
-            cout << oss.str();
-            break;
-        case 2:
-            cout << "Escreva o nome do territorio Pretendido ->";
-            cin >> terrPretendido;
-            for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-                if (terrPretendido == jogo[i]->getNometerritorio()) {
-                    existe = true;
-                    if (jogo[i]->getConquista() == false) {
-                        sorte = rand() % 6 + 1;
-                        cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
-                    }
-                    if (jogo[i]->getConquista() == true) {
-                        cout << "Territorio já conquistado" << endl;
-                        break;
-                    }
-                    else if ((sorte+força_militar)>=jogo[i]->getResistencia())
-                           {
-                        jogo[i]->setConquista();
-                        cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
-                        turno_terminado = true;
+
+    cout << "FORCA MILITAR:" << força_militar << "\tULTIMA SORTE: " << sorte << endl;
+    cout << "1: Listar" << endl;
+    cout << "2: Conquistar" << endl;
+    cout << "3: Passar Turno" << endl;
+    cin >> esc;
+    switch (esc) {
+    case 1:
+        cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
+        for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
+            oss << jogo[i]->getAsString();
+        cout << oss.str();
+        break;
+    case 2:
+        cout << "Escreva o nome do territorio Pretendido ->";
+        cin >> terrPretendido;
+        for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+            if (terrPretendido == jogo[i]->getNometerritorio()) {
+                existe = true;
+                if (jogo[i]->getConquista() == false) {
+                    sorte = rand() % 6 + 1;
+                    cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
+                }
+                if (jogo[i]->getConquista() == true) {
+                    cout << "Territorio já conquistado" << endl;
+                    break;
+                }
+                else if ((sorte+força_militar)>=jogo[i]->getResistencia())
+                {
+                    jogo[i]->setConquista();
+                    cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                        
+                }
+                else
+                {
+                    cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
+                    if(força_militar>0)
+                        força_militar--;
+                }
+            }
+        }
+        if (!existe)
+            {
+            cout << "Territorio Não Exite" << endl;
+            }
+            
+        break;
+    case 3:
+        break;
+    }
+}
+
+void Interacao::ListarTudo() {
+    ostringstream oss;
+    for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
+        oss << jogo[i]->getAsString();
+    cout << oss.str();
+
+}
+
+void Interacao::ListarTerr(string nomeaux) {
+    ostringstream oss;
+    for (unsigned int i = 0; i < jogo.size(); i++) {// listar todos os territórios com um certo nome
+        if(nomeaux == jogo[i]->getNometerritorio())
+            oss << jogo[i]->getAsString();
+    }
+    cout << oss.str();
+}
+
+void Interacao::ListarConquistados() {
+    ostringstream oss;
+    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
+        if (jogo[i]->getConquista() == true)
+            oss << jogo[i]->getAsString();
+    }
+    cout << oss.str();
+}
+
+
+void Interacao::FaseCP(){
+
+    string copia, str, cmd,nomeTerritorio,nomePesquisa;
+    bool verificaEscConqPass = false;
+    mostra_comandos_CP();
+    for (;;)
+    {
+
+        cout << "> ";
+        fflush(stdout);
+        getline(cin, cmd);
+
+        istringstream bufi(cmd);
+        ostringstream oss;
+
+        while (bufi >> str)
+        {
+            copia = str;
+            if (copia == "conquista") {
+                bool existe = false; // verifica se o territorio existe
+                if (!verificaEscConqPass){
+                    bufi >> nomeTerritorio;
+                    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                            existe = true;
+                            if (jogo[i]->getConquista() == false) {
+                                sorte = rand() % 6 + 1;
+                                cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
+                            }
+                            if (jogo[i]->getConquista() == true) {
+                                cout << "Territorio já conquistado" << endl;
+                                break;
+                            }
+                            else if ((sorte+força_militar)>=jogo[i]->getResistencia())
+                            {
+                                jogo[i]->setConquista();
+                                cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
                         
                             }
                             else
@@ -76,85 +222,137 @@ void Interacao::conquistar_passar(){
                                 cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
                                 if(força_militar>0)
                                     força_militar--;
-                                turno_terminado = true;
-                             }
+                            }
+                        }
+                    }
+                    if (!existe)
+                        {
+                        cout << "Territorio Não Exite" << endl;
+                        }
+                    verificaEscConqPass = true;
+
+                }
+                else if(verificaEscConqPass){
+                    cout << "\n Ja efetuou a sua acao neste turno, utilize o comando 'avanca' para passar o turno" << endl;
                 }
             }
-            if (!existe)
-                {
-                cout << "Territorio Não Exite" << endl;
+            if (copia == "passa") {
+                if (!verificaEscConqPass) {
+                    cout << "\nDecidiu não conquistar nada neste turno" << endl;
+                    verificaEscConqPass = true;
                 }
-            
-            break;
-        case 3:
+                else if(verificaEscConqPass){
+                    cout << "\n Ja efetuou a sua acao neste turno, utilize o comando 'avanca' para passar o turno" << endl;
+                }
+            }
+            if (copia == "lista") {
+                nomePesquisa = "";
+                if (!(bufi >> nomePesquisa)) {
+                    ListarTudo();
+                }
+                else if (nomePesquisa == "meus") {
+                    ListarConquistados();
+                }
+                else if (nomePesquisa != ""){
+                    ListarTerr(nomePesquisa);
+                }
+            }
+            if (copia == "avanca")
+            {
+                return;
+            }
+            if (copia == "grava")
+            {
 
-            turno_terminado = true;
-            break;
+            }
+            if (copia == "ativa")
+            {
+
+            }
+            if (copia == "apaga")
+            {
+
+            }
+            if (copia == "toma")
+            {
+
+            }
+            if (copia == "modifica")
+            {
+
+            }
+            if (copia == "fevento")
+            {
+
+            }
+
         }
     }
 }
 
-void Interacao::obter_força_militar() {
+void Interacao::FaseRP(){
 
 }
 
-void Interacao::obter_tecnologias() {
+void Interacao::FaseCUMT(){
 
 }
+
+void Interacao::FaseFE(){
+
+}
+
 
 void Interacao::escrita_menus() {
     system("cls");
 
-    ostringstream oss;
-    int escolha;
-
     srand((unsigned int)time(NULL));
-    int sorte = 0;
 
     while(1) {
-
+        bool verificaTrocas = false;
+        bool verificaCompras = false;
         if(turno%6==0){
             ano++;
         }
         cout << "ANO: " << ano << endl;
         cout << "TURNO: " << turno << endl;
-        cout << "FORÇA MILITAR: " << força_militar << endl;
+        cout << "FORCA MILITAR: " << força_militar << endl;
         cout << "ULTIMA SORTE: " << sorte << endl;
 
-        mostra_menu();
-        cin >> escolha;
+        FaseCP();
+    
 
-        switch (escolha)
-        {
-        case 1:
-            cout << "O jogador pode escolher uma das seguintes opções:" << endl;
-            conquistar_passar();
-            turno++;
-            break;
-        case 2:
-            cout << "Recolhe os produtos dos territorios conquistados" << endl;
-            //turno++;
-            break;
-        case 3:
-            cout << "Aumentar as forças militares" << endl;
-            // chamar funçao que permite escolher entre obter tecnologias ou aumentar força militar
-            obter_força_militar();
-            //turno++;
-            break;
-        case 4:
-            cout << "Ah um evento" << endl;
-            //chamar funçao que atribui aleatóriamente um evento(Recurso abandonado/ invasao) e termina o turno
-            //turno++;
-            break;
-        case 5:
-            cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
-            for (unsigned int i = 0; i < jogo.size(); i++) // listar todos 
-                oss << jogo[i]->getAsString();
-            cout << oss.str();
-            break;
-        case 0:
-            exit(0);
-        }
+        //comandos do turno de conquista passar
+        //cin >> escolha;
+
+        //switch (escolha)
+        //{
+        //case 1:
+        //    cout << "O jogador pode escolher uma das seguintes opções:" << endl;
+        //    conquistar_passar();
+        //    turno++;
+        //    break;
+        //case 2:
+        //    cout << "Recolhe os produtos dos territorios conquistados" << endl;
+        //    break;
+        //case 3:
+        //    cout << "Aumentar as forças militares" << endl;
+        //    // chamar funçao que permite escolher entre obter tecnologias ou aumentar força militar
+            
+        //    break;
+        //case 4:
+        //    cout << "Ah um evento" << endl;
+        //    //chamar funçao que atribui aleatóriamente um evento(Recurso abandonado/ invasao) e termina o turno
+        //    break;
+        //case 5:
+        //    cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
+        //    for (unsigned int i = 0; i < jogo.size(); i++) // listar todos 
+        //        oss << jogo[i]->getAsString();
+        //    cout << oss.str();
+        //    break;
+        //case 0:
+        //    exit(0);
+        //}
     }
 }
 
@@ -170,7 +368,7 @@ void Interacao::carregar(string nomefich) {
 
     ifstream myFile(nomefich);
 
-    string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, tipoTerritorio, rep, lixo;
+    string str, copia, tipoTerritorio, rep, lixo;
     
     if (!myFile.is_open()) {
         cout << "Ficheiro nao existe, nada foi carregado" << endl;
@@ -394,20 +592,17 @@ void Interacao::carregar(string nomefich) {
     return;
 }
 
-
 int Interacao::comandline() {
     int maxr = 1;
 
-    string cmd;
-
-    string str, copia, nome_territorio, resistencia, produtos, ouro, pontos_vitoria, nomefich, tipoTerritorio, rep, lixo;
+    string cmd, str, copia, nomefich, tipoTerritorio, rep, lixo;
 
     cout << "Lista de comandos:\n\tcarrega <nome_ficheiro>\n\tcria <Tipo_de_Territorio> <numero_de_vezes>\n\tlista\n\tavanca\n\tsair\n\n";
 
     for (;;)
     {
 
-        cout << "comando> ";
+        cout << "<comando> ";
         fflush(stdout);
         getline(cin, cmd);
 
