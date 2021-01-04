@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "Mundo_Territorio.h"
+#include "Tecnologias.h"
 using namespace std;
 
 
@@ -9,11 +10,18 @@ class Interacao {
 private:
 	vector<Mundo_Territorios*> jogo;
 	int força_militar;
+	int força_militar_max = 3;
 	int turno = 1, ano = 1;
-	int ouroTotal = 0;
-	int ProdutosTotal = 0;
+	int ouroTotal = 2;
+	int produtosTotal = 3;
 	int sorte = 0;
 	int sorteAdversaria = 0;
+	int produtosMax = 3;
+	int ouroMax = 3;
+	bool conquistaIlhas = false;
+	bool fazerTrocas = false;
+	int resistenciaBonus = 0;
+	vector<Tecnologias*> tecs;
 
 public:
 	int comandline();
@@ -33,6 +41,10 @@ public:
 	void mostra_comandos_RP();
 	void mostra_comandos_CUMT();
 	void mostra_comandos_FE();
+	void status();
+	void iniciaTecs();
+	void listaTecs();
 	Interacao();
+	
 
 };

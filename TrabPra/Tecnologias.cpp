@@ -3,48 +3,34 @@
 
 using namespace std;
 
-bool Tecnologias::getDronesMilitares() const {
-	return drones_Militares;
+Tecnologias::Tecnologias(string nome,int preco){
+	this->nome = nome;
+	this->preco = preco;
 }
 
-bool Tecnologias::getMisseisTeleguiados() const {
-	return missies_Teleguiados;
+string Tecnologias::getCompradaString() const { return comprada ? "Ja tens" : "Nao tens"; }
+
+string Tecnologias::getAsString() const {
+	ostringstream oss;
+
+	oss << nome << "\t" << preco << "\t" << getCompradaString() << endl;
+	return oss.str();
 }
 
-bool Tecnologias::getDefesasTerritoriais() const {
-	return defesas_Territoriais;
+bool Tecnologias::getComprada() const {
+	return comprada;
 }
 
-bool Tecnologias::getBolsaValores() const {
-	return bolsa_Valores;
+string Tecnologias::getNome() const {
+	return nome;
 }
 
-bool Tecnologias::getBancoCentral() const {
-	return banco_Central;
+int Tecnologias::getPreco() const {
+	return preco;
 }
 
 
-bool Tecnologias::setDronesMilitares(){
-	drones_Militares = true;
-	return drones_Militares;
-}
 
-bool Tecnologias::setMisseisTeleguiados(){
-	missies_Teleguiados = true;
-	return missies_Teleguiados;
-}
-
-bool Tecnologias::setDefesasTerritoriais(){
-	defesas_Territoriais = true;
-	return defesas_Territoriais;
-}
-
-bool Tecnologias::setBolsaValores(){
-	bolsa_Valores = true;
-	return bolsa_Valores;
-}
-
-bool Tecnologias::setBancoCentral(){
-	banco_Central = true;
-	return banco_Central;
+bool Tecnologias::setComprada(){
+	comprada = true;
 }

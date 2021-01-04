@@ -6,25 +6,26 @@ using namespace std;
 
 class Tecnologias {
 private:
-	bool drones_Militares = false;
-	bool missies_Teleguiados = false;
-	bool defesas_Territoriais = false;
-	bool bolsa_Valores = false;
-	bool banco_Central = false;
+	//bool drones_Militares = false;
+	//bool missies_Teleguiados = false;
+	//bool defesas_Territoriais = false;
+	//bool bolsa_Valores = false;
+	//bool banco_Central = false;
+	string nome;
+	int preco;
+	bool comprada = false;
 
 
 public:
+
+	Tecnologias(string nome, int preco);
 	//get
-	bool getDronesMilitares()const;
-	bool getMisseisTeleguiados()const;
-	bool getDefesasTerritoriais()const;
-	bool getBolsaValores()const;
-	bool getBancoCentral()const;
+	bool getComprada()const;
+	string getNome()const;
+	int getPreco()const;
+	string getAsString()const;
+	string getCompradaString() const;
 
 	//set
-	bool setDronesMilitares();
-	bool setMisseisTeleguiados();
-	bool setDefesasTerritoriais();
-	bool setBolsaValores();
-	bool setBancoCentral();
+	bool setComprada();
 };

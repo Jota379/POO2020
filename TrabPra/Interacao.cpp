@@ -48,7 +48,7 @@ void Interacao::mostra_comandos_RP(){
     cout << "=====Fase Recolha de Produtos e Ouro=====" << endl
         << "Comandos:" << endl
         << "\tmaisprod ;" << endl
-        << "\tmais ouro;" << endl
+        << "\tmaisouro;" << endl
         << "\tlista < | nometerritorio | meus> ; caso não meta nome de territorio lista tudo, caso utilize o 'meus' lista os territorios conquistados" << endl
         << "\tavanca ; passa à proxima fase" << endl
         << "\tgrava <nome>" << endl
@@ -177,7 +177,6 @@ void Interacao::ListarConquistados() {
     cout << oss.str();
 }
 
-
 void Interacao::FaseCP(){
 
     string copia, str, cmd,nomeTerritorio,nomePesquisa;
@@ -291,17 +290,322 @@ void Interacao::FaseCP(){
 }
 
 void Interacao::FaseRP(){
+    string copia, str, cmd, nomePesquisa;
+    bool verificaTrocas = false;
+    mostra_comandos_RP();
 
+    for (;;)
+    {
+        cout << "> ";
+        fflush(stdout);
+        getline(cin, cmd);
+
+        istringstream bufi(cmd);
+        ostringstream oss;
+
+        while (bufi >> str)
+        {
+            copia = str;
+            if (copia == "maisprod")
+            {
+                if (!verificaTrocas)
+                {
+                    if (ouroTotal >= 2 && produtosTotal < produtosMax) {
+                        cout << "O jogador trocou 2 uni. de ouro por 1 uni. de prod" << endl;
+                        produtosTotal++;
+                        ouroTotal -= 2;
+                        verificaTrocas = true;
+                    }
+                    else
+                        if (produtosMax == produtosTotal)
+                            cout << "Já tem a quantidade maxima de produtos" << endl;
+                        else
+                            cout << "O jogador não tem ouro suficiente para fazer a troca !" << endl;
+                }
+                else
+                    cout << "Ja fez a opcao possivel neste turno !" << endl;
+            }
+            if (copia == "maisouro")
+            {
+                if (!verificaTrocas){
+                    if (ouroTotal >= 2 && ouroTotal < ouroMax) {
+                        cout << "O jogador trocou 2 uni. de produtos por 1 uni. de ouro" << endl;
+                        ouroTotal++;
+                        produtosTotal -= 2;
+                        verificaTrocas = true;
+                    }
+                    else
+                        if (ouroMax == ouroTotal)
+                            cout << "Já tem a quantidade maxima de produtos" << endl;
+                        else
+                            cout << "O jogador não tem ouro suficiente para fazer a troca !" << endl;
+                }
+                else
+                {
+                    cout << "Ja fez a operacao neste turno !" << endl;
+                }
+            }
+            if (copia == "lista") {
+                nomePesquisa = "";
+                if (!(bufi >> nomePesquisa)) {
+                    ListarTudo();
+                }
+                else if (nomePesquisa == "meus") {
+                    ListarConquistados();
+                }
+                else if (nomePesquisa != "") {
+                    ListarTerr(nomePesquisa);
+                }
+            }
+            if (copia == "avanca")
+            {
+                return;
+            }
+            if (copia == "grava")
+            {
+
+            }
+            if (copia == "ativa")
+            {
+
+            }
+            if (copia == "apaga")
+            {
+
+            }
+            if (copia == "toma")
+            {
+
+            }
+            if (copia == "modifica")
+            {
+
+            }
+            if (copia == "fevento")
+            {
+
+            }
+
+        }
+    }
 }
 
 void Interacao::FaseCUMT(){
+    string copia, str, cmd, nomePesquisa, tipo;
+    bool verificaCompras = false;
+    mostra_comandos_CUMT();
+    cout << "=====Loja=====" << endl;
+    listaTecs();
 
+    for (;;)
+    {
+        cout << "> ";
+        fflush(stdout);
+        getline(cin, cmd);
+
+        istringstream bufi(cmd);
+        ostringstream oss;
+
+        while (bufi >> str)
+        {
+            copia = str;
+            if (copia == "adquire")
+            {
+               bufi >> tipo;
+               if (tipo == "drone")
+               {
+                   if (!verificaCompras) {
+                       if (ouroTotal >= tecs[0]->getPreco() && tecs[0]->getComprada() == false) {
+                           força_militar_max = 5;
+                       }
+                       else {
+                           if (ouroTotal < tecs[0]->getPreco()) {
+                               cout << "Não tem dinheiro suficiente" << endl;
+                           }
+                           else {
+                               cout << "Ja comprou o artigo" << endl;
+                           }
+                       }
+                   }
+                   else{
+                        cout << "Ja fez a sua compra neste turno" << endl;
+                    }
+               }
+               if (tipo == "missil")
+               {
+                   if (!verificaCompras) {
+                       if (ouroTotal >= tecs[1]->getPreco() && tecs[1]->getComprada() == false)
+                       {
+                           conquistaIlhas = true;
+                       }
+                       else {
+                           if (ouroTotal < tecs[1]->getPreco()) {
+                               cout << "Nao tem dinheiro suficiente" << endl;
+                           }
+                           else {
+                               cout << "Ja comprou o artigo" << endl;
+                           }
+                       }
+                   }
+                   else{
+                        cout << "Ja fez a sua compra neste turno" << endl;
+                    }
+                  
+               }
+               if (tipo == "defesa")
+               {
+                    if (!verificaCompras) {
+                       if (ouroTotal >= tecs[2]->getPreco() && tecs[2]->getComprada() == false) {
+                           resistenciaBonus = 1;
+                       }
+                       else {
+                           if (ouroTotal < tecs[2]->getPreco()) {
+                               cout << "Não tem dinheiro suficiente" << endl;
+                           }
+                           else {
+                               cout << "Ja comprou o artigo" << endl;
+                           }
+                       }
+                   }
+                    else{
+                        cout << "Ja fez a sua compra neste turno" << endl;
+                    }
+               }
+               if (tipo == "bolsa")
+               {
+                    if (!verificaCompras) {
+                       if (ouroTotal >= tecs[0]->getPreco() && tecs[0]->getComprada() == false) {
+                           fazerTrocas = true;
+                       }
+                       else {
+                           if (ouroTotal < tecs[0]->getPreco()) {
+                               cout << "Não tem dinheiro suficiente" << endl;
+                           }
+                           else {
+                               cout << "Ja comprou o artigo" << endl;
+                           }
+                       }
+                   }
+                   else{
+                        cout << "Ja fez a sua compra neste turno" << endl;
+                    }
+               }
+               if (tipo == "banco")
+               {
+                   if (!verificaCompras) {
+                       if (ouroTotal >= tecs[4]->getPreco() && tecs[1]->getComprada() == false)
+                       {
+                           ouroMax = 5;
+                           produtosMax = 5;
+                       }
+                       else {
+                           if (ouroTotal < tecs[4]->getPreco()) {
+                               cout << "Nao tem dinheiro suficiente" << endl;
+                           }
+                           else {
+                               cout << "Ja comprou o artigo" << endl;
+                           }
+                       }
+                   }
+                   else{
+                        cout << "Ja fez a sua compra neste turno" << endl;
+                   }
+               }
+            }
+            if (copia == "maismilitar")
+            {
+                if (!verificaCompras)
+                {
+                    if (ouroTotal >= 1 && produtosTotal >= 1 && força_militar < força_militar_max) {
+                        cout << "O jogador obteve mais 1 uni. de forca militar." << endl;
+                        força_militar++;
+                        verificaCompras = true;
+                    }
+                    else {
+                        if (força_militar == força_militar_max)
+                            cout << "Já tem a quantidade maxima de forca militar" << endl;
+                        else
+                            cout << "O jogador não recursos suficiente para fazer a compra !" << endl;
+                    }
+                }
+                else
+                {
+                    cout << "Ja fez a operacao neste turno!" << endl;
+                }
+               
+            }
+            
+            if (copia == "lista") {
+                nomePesquisa = "";
+                if (!(bufi >> nomePesquisa)) {
+                    ListarTudo();
+                }
+                else if (nomePesquisa == "meus") {
+                    ListarConquistados();
+                }
+                else if (nomePesquisa != "") {
+                    ListarTerr(nomePesquisa);
+                }
+            }
+            if (copia == "avanca")
+            {
+                return;
+            }
+            if (copia == "grava")
+            {
+
+            }
+            if (copia == "ativa")
+            {
+
+            }
+            if (copia == "apaga")
+            {
+
+            }
+            if (copia == "toma")
+            {
+
+            }
+            if (copia == "modifica")
+            {
+
+            }
+            if (copia == "fevento")
+            {
+
+            }
+
+        }
+    }
 }
 
 void Interacao::FaseFE(){
 
 }
 
+void Interacao::status(){
+    cout << "ANO: " << ano << endl;
+    cout << "TURNO: " << turno << endl;
+    cout << "FORCA MILITAR: " << força_militar << endl;
+    cout << "ULTIMA SORTE: " << sorte << endl;
+    cout << "OURO: " << ouroTotal << endl;
+    cout << "PRODUTOS: " << produtosTotal << endl;
+}
+
+void Interacao::iniciaTecs(){ // criação das tecnologias
+    tecs.push_back(new Tecnologias("Drones militares", 3));
+    tecs.push_back(new Tecnologias("Misseis teleguiados", 4));
+    tecs.push_back(new Tecnologias("Defesas Territoriais", 4));
+    tecs.push_back(new Tecnologias("Bolsa de valores", 2));
+    tecs.push_back(new Tecnologias("Banco central", 3));
+}
+void Interacao::listaTecs(){
+    ostringstream oss;
+    for (unsigned int i = 0; i < tecs.size(); i++) // listar todos as Tecnologias
+        oss << tecs[i]->getAsString();
+    cout << oss.str();
+}
 
 void Interacao::escrita_menus() {
     system("cls");
@@ -309,17 +613,18 @@ void Interacao::escrita_menus() {
     srand((unsigned int)time(NULL));
 
     while(1) {
-        bool verificaTrocas = false;
-        bool verificaCompras = false;
+
+
         if(turno%6==0){
             ano++;
         }
-        cout << "ANO: " << ano << endl;
-        cout << "TURNO: " << turno << endl;
-        cout << "FORCA MILITAR: " << força_militar << endl;
-        cout << "ULTIMA SORTE: " << sorte << endl;
+        
 
+        iniciaTecs();
+        status();
         FaseCP();
+        status();
+        FaseRP();
     
 
         //comandos do turno de conquista passar
