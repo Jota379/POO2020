@@ -27,5 +27,5 @@ public:
 	string getCompradaString() const;
 
 	//set
-	bool setComprada();
+	void setComprada();
 };

@@ -31,6 +31,6 @@ int Tecnologias::getPreco() const {
 
 
 
-bool Tecnologias::setComprada(){
+void Tecnologias::setComprada(){
 	comprada = true;
 }

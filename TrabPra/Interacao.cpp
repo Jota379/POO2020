@@ -12,6 +12,11 @@
 
 using namespace std;
 
+template<typename Base, typename T>
+inline bool instanceof(const T*) {
+   return is_base_of<Base, T>::value;
+}
+
 Interacao::Interacao(){
     força_militar = rand() % 4;
 }
@@ -202,6 +207,10 @@ void Interacao::FaseCP(){
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
                         if (nomeTerritorio == jogo[i]->getNometerritorio()) {
                             existe = true;
+                            if( instanceof<Pescaria>(jogo[i])){
+                                cout << "sou uma ilha" << endl;
+                            }
+                            else
                             if (jogo[i]->getConquista() == false) {
                                 sorte = rand() % 6 + 1;
                                 cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
@@ -214,13 +223,15 @@ void Interacao::FaseCP(){
                             {
                                 jogo[i]->setConquista();
                                 cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                                verificaEscConqPass = true;
                         
                             }
                             else
                             {
-                                cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
+                                cout << "Falhou a Conquista do Territorio " << typeid(jogo[i]).name()/*jogo[i]->getNometerritorio()*/ << endl;
                                 if(força_militar>0)
                                     força_militar--;
+                                verificaEscConqPass = true;
                             }
                         }
                     }
@@ -228,7 +239,7 @@ void Interacao::FaseCP(){
                         {
                         cout << "Territorio Não Exite" << endl;
                         }
-                    verificaEscConqPass = true;
+                    
 
                 }
                 else if(verificaEscConqPass){
@@ -416,7 +427,10 @@ void Interacao::FaseCUMT(){
                {
                    if (!verificaCompras) {
                        if (ouroTotal >= tecs[0]->getPreco() && tecs[0]->getComprada() == false) {
+                           cout << "O jogador comprou a tecnologia " << tecs[0]->getNome() << endl;
+                           tecs[0 ]->setComprada();
                            força_militar_max = 5;
+                           ouroTotal -= tecs[0]->getPreco();
                        }
                        else {
                            if (ouroTotal < tecs[0]->getPreco()) {
@@ -436,7 +450,10 @@ void Interacao::FaseCUMT(){
                    if (!verificaCompras) {
                        if (ouroTotal >= tecs[1]->getPreco() && tecs[1]->getComprada() == false)
                        {
+                           cout << "O jogador comprou a tecnologia " << tecs[1]->getNome() << endl;
+                           tecs[1]->setComprada();
                            conquistaIlhas = true;
+                           ouroTotal -= tecs[1]->getPreco();
                        }
                        else {
                            if (ouroTotal < tecs[1]->getPreco()) {
@@ -456,7 +473,11 @@ void Interacao::FaseCUMT(){
                {
                     if (!verificaCompras) {
                        if (ouroTotal >= tecs[2]->getPreco() && tecs[2]->getComprada() == false) {
+                           cout << "O jogador comprou a tecnologia " << tecs[2]->getNome() << endl;
+                           tecs[2]->setComprada();
                            resistenciaBonus = 1;
+                           ouroTotal -= tecs[2]->getPreco();
+
                        }
                        else {
                            if (ouroTotal < tecs[2]->getPreco()) {
@@ -474,8 +495,11 @@ void Interacao::FaseCUMT(){
                if (tipo == "bolsa")
                {
                     if (!verificaCompras) {
-                       if (ouroTotal >= tecs[0]->getPreco() && tecs[0]->getComprada() == false) {
+                       if (ouroTotal >= tecs[3]->getPreco() && tecs[3]->getComprada() == false) {
+                           cout << "O jogador comprou a tecnologia " << tecs[3]->getNome() << endl;
+                           tecs[3]->setComprada();
                            fazerTrocas = true;
+                           ouroTotal -= tecs[3]->getPreco();
                        }
                        else {
                            if (ouroTotal < tecs[0]->getPreco()) {
@@ -493,10 +517,14 @@ void Interacao::FaseCUMT(){
                if (tipo == "banco")
                {
                    if (!verificaCompras) {
-                       if (ouroTotal >= tecs[4]->getPreco() && tecs[1]->getComprada() == false)
+                       if (ouroTotal >= tecs[4]->getPreco() && tecs[4]->getComprada() == false)
                        {
+                           cout << "O jogador comprou a tecnologia " << tecs[4]->getNome() << endl;
+                           tecs[4]->setComprada();
                            ouroMax = 5;
                            produtosMax = 5;
+                           ouroTotal -= tecs[4]->getPreco();
+
                        }
                        else {
                            if (ouroTotal < tecs[4]->getPreco()) {
@@ -620,11 +648,12 @@ void Interacao::escrita_menus() {
         }
         
 
-        iniciaTecs();
         status();
         FaseCP();
         status();
         FaseRP();
+        status();
+        FaseCUMT();
     
 
         //comandos do turno de conquista passar
@@ -663,7 +692,9 @@ void Interacao::escrita_menus() {
 
 void Interacao::comeca_jogo() {
     cout << "Entrou no jogo" << endl;
+    iniciaTecs();
     escrita_menus();
+    
 }
 
 void Interacao::carregar(string nomefich) {
