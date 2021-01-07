@@ -1,4 +1,8 @@
-﻿  Interacao.cpp
-C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Interacao.cpp(210,33): error C2672: 'instanceof': no matching overloaded function found
-C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Interacao.cpp(210,31): error C2784: 'bool instanceof(const T *)': could not deduce template argument for 'const T *' from 'Mundo_Territorios'
-C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Interacao.cpp(16): message : see declaration of 'instanceof'
+﻿  Continentes.cpp
+  Ilha.cpp
+  Interacao.cpp
+  Main.cpp
+  Mundo_Territorio.cpp
+  Tecnologias.cpp
+  Generating Code...
+  TrabPra.vcxproj -> C:\Users\eduar\Documents\GitHub\POO2020\TrabPra\Debug\TrabPra.exe

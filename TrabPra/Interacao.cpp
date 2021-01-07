@@ -12,11 +12,6 @@
 
 using namespace std;
 
-template<typename Base, typename T>
-inline bool instanceof(const T*) {
-   return is_base_of<Base, T>::value;
-}
-
 Interacao::Interacao(){
     força_militar = rand() % 4;
 }
@@ -103,6 +98,7 @@ void Interacao::conquistar(){
     string terrPretendido;
     srand((unsigned int)time(NULL));
     bool existe = false; // verifica se o territorio existe
+    bool sucesso;
 
 
     cout << "FORCA MILITAR:" << força_militar << "\tULTIMA SORTE: " << sorte << endl;
@@ -126,17 +122,19 @@ void Interacao::conquistar(){
                 if (jogo[i]->getConquista() == false) {
                     sorte = rand() % 6 + 1;
                     cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
+                    sucesso = jogo[i]->setConquista(força_militar,sorte,tecs[1]->getComprada());
+                    if (sucesso) {
+                        cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                    }
+                    else{
+
+                    }
+                    
                 }
-                if (jogo[i]->getConquista() == true) {
+                else if (jogo[i]->getConquista() == true) {
                     cout << "Territorio já conquistado" << endl;
                     break;
-                }
-                else if ((sorte+força_militar)>=jogo[i]->getResistencia())
-                {
-                    jogo[i]->setConquista();
-                    cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
-                        
-                }
+                }  
                 else
                 {
                     cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
@@ -186,6 +184,7 @@ void Interacao::FaseCP(){
 
     string copia, str, cmd,nomeTerritorio,nomePesquisa;
     bool verificaEscConqPass = false;
+    int sucesso;
     mostra_comandos_CP();
     for (;;)
     {
@@ -207,31 +206,27 @@ void Interacao::FaseCP(){
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
                         if (nomeTerritorio == jogo[i]->getNometerritorio()) {
                             existe = true;
-                            if( instanceof<Pescaria>(jogo[i])){
-                                cout << "sou uma ilha" << endl;
-                            }
-                            else
                             if (jogo[i]->getConquista() == false) {
                                 sorte = rand() % 6 + 1;
                                 cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
+                                sucesso = jogo[i]->setConquista(força_militar, sorte, conquistaIlhas);
+                                if (sucesso == 0){ 
+                                        cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                                        verificaEscConqPass = true;
+                                    }
+                                else if (sucesso == 1){ 
+                                    cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
+                                    if(força_militar>0)
+                                    força_militar--;
+                                    verificaEscConqPass = true;
+                                }
+                                else if (sucesso == 2){
+                                    cout << "Não tem a tecnologia " << tecs[1]->getNome() << " para conquistar uma ilha !" <<endl;
+                                }
                             }
-                            if (jogo[i]->getConquista() == true) {
+                            else if (jogo[i]->getConquista() == true) {
                                 cout << "Territorio já conquistado" << endl;
                                 break;
-                            }
-                            else if ((sorte+força_militar)>=jogo[i]->getResistencia())
-                            {
-                                jogo[i]->setConquista();
-                                cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
-                                verificaEscConqPass = true;
-                        
-                            }
-                            else
-                            {
-                                cout << "Falhou a Conquista do Territorio " << typeid(jogo[i]).name()/*jogo[i]->getNometerritorio()*/ << endl;
-                                if(força_militar>0)
-                                    força_militar--;
-                                verificaEscConqPass = true;
                             }
                         }
                     }
@@ -431,6 +426,7 @@ void Interacao::FaseCUMT(){
                            tecs[0 ]->setComprada();
                            força_militar_max = 5;
                            ouroTotal -= tecs[0]->getPreco();
+                           verificaCompras = true;
                        }
                        else {
                            if (ouroTotal < tecs[0]->getPreco()) {
@@ -454,6 +450,7 @@ void Interacao::FaseCUMT(){
                            tecs[1]->setComprada();
                            conquistaIlhas = true;
                            ouroTotal -= tecs[1]->getPreco();
+                           verificaCompras = true;
                        }
                        else {
                            if (ouroTotal < tecs[1]->getPreco()) {
@@ -477,7 +474,7 @@ void Interacao::FaseCUMT(){
                            tecs[2]->setComprada();
                            resistenciaBonus = 1;
                            ouroTotal -= tecs[2]->getPreco();
-
+                           verificaCompras = true;
                        }
                        else {
                            if (ouroTotal < tecs[2]->getPreco()) {
@@ -500,6 +497,7 @@ void Interacao::FaseCUMT(){
                            tecs[3]->setComprada();
                            fazerTrocas = true;
                            ouroTotal -= tecs[3]->getPreco();
+                           verificaCompras = true;
                        }
                        else {
                            if (ouroTotal < tecs[0]->getPreco()) {
@@ -524,6 +522,7 @@ void Interacao::FaseCUMT(){
                            ouroMax = 5;
                            produtosMax = 5;
                            ouroTotal -= tecs[4]->getPreco();
+                           verificaCompras = true;
 
                        }
                        else {

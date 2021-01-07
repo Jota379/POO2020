@@ -21,9 +21,14 @@ void Mundo_Territorios::setNomeTerritorio(string nome_territorio)
     this->nome_territorio=nome_territorio;
 }
 
-void Mundo_Territorios::setConquista()
+int Mundo_Territorios::setConquista(int forca,int sorte,bool tec)
 {
-    conquistado = true;
+    if ((forca + sorte) >= resistencia)
+    {
+        conquistado = true;
+        return 0;
+    } 
+    return 1;
 }
 
 string Mundo_Territorios::getNometerritorio() const

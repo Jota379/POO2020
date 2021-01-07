@@ -24,7 +24,7 @@ public:
 
     //funções set 
     void setNomeTerritorio(string nome_territorio);
-    void setConquista();
+    virtual int setConquista(int forca,int sorte,bool tec);
 
     //funções get
     string getNometerritorio() const;
