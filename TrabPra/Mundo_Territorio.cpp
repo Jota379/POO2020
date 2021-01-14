@@ -31,6 +31,11 @@ int Mundo_Territorios::setConquista(int forca,int sorte,bool tec)
     return 1;
 }
 
+void Mundo_Territorios::setConquistaADM(bool estado)
+{
+    conquistado = estado;
+}
+
 string Mundo_Territorios::getNometerritorio() const
 {
     ostringstream os;

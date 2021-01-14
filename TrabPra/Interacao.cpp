@@ -91,7 +91,7 @@ void Interacao::mostra_comandos_FE() {
         << "\tfevento <nome-evento>" << endl;
 }
 
-void Interacao::conquistar(){
+/*void Interacao::conquistar(){
     system("cls");
     int esc;
     ostringstream oss;
@@ -125,6 +125,7 @@ void Interacao::conquistar(){
                     sucesso = jogo[i]->setConquista(força_militar,sorte,tecs[1]->getComprada());
                     if (sucesso) {
                         cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
+                        ultimoTerr = jogo[i]->getNometerritorio();
                     }
                     else{
 
@@ -152,7 +153,7 @@ void Interacao::conquistar(){
     case 3:
         break;
     }
-}
+}*/
 
 void Interacao::ListarTudo() {
     ostringstream oss;
@@ -213,6 +214,7 @@ void Interacao::FaseCP(){
                                 if (sucesso == 0){ 
                                         cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
                                         verificaEscConqPass = true;
+                                        ultimoTerr.push_back(i);
                                     }
                                 else if (sucesso == 1){ 
                                     cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
@@ -226,7 +228,6 @@ void Interacao::FaseCP(){
                             }
                             else if (jogo[i]->getConquista() == true) {
                                 cout << "Territorio já conquistado" << endl;
-                                break;
                             }
                         }
                     }
@@ -607,8 +608,122 @@ void Interacao::FaseCUMT(){
     }
 }
 
-void Interacao::FaseFE(){
+void Interacao::FaseFE()
+{
+    string copia, str, cmd, nomePesquisa, tipo;
+    aplicaEvento();
+    mostra_comandos_FE();
 
+    for (;;)
+    {
+        cout << "> ";
+        fflush(stdout);
+        getline(cin, cmd);
+
+        istringstream bufi(cmd);
+        ostringstream oss;
+
+        while (bufi >> str)
+        {
+            copia = str;
+
+                if (copia == "lista") {
+                    nomePesquisa = "";
+                    if (!(bufi >> nomePesquisa)) {
+                        ListarTudo();
+                    }
+                    else if (nomePesquisa == "meus") {
+                        ListarConquistados();
+                    }
+                    else if (nomePesquisa != "") {
+                        ListarTerr(nomePesquisa);
+                    }
+                }
+                if (copia == "avanca")
+                {
+                    return;
+                }
+                if (copia == "grava")
+                {
+
+                }
+                if (copia == "ativa")
+                {
+
+                }
+                if (copia == "apaga")
+                {
+
+                }
+                if (copia == "toma")
+                {
+
+                }
+                if (copia == "modifica")
+                {
+
+                }
+                if (copia == "fevento")
+                {
+
+                }
+
+            }
+        }
+}
+
+
+void Interacao::aplicaEvento(){
+    int i = rand() % 4;
+    
+    if (i == 0)
+    {
+        cout << "Não há evento" << endl;
+        return;
+    }
+    else if (i==1) {
+        cout << "Recurso Abandonado" << endl;
+        if (ano == 1 && produtosTotal < produtosMax)
+            produtosTotal++;
+        else if (ano == 2 && ouroTotal < ouroMax)
+            ouroTotal++;
+        return;
+    }
+    else if (i==2) {
+
+        cout << "UMA INVASÃO SOBRE " << jogo[ultimoTerr[ultimoTerr.size() - 1]]->getNometerritorio() << " ESTA A COMECAR" << endl;
+        int forcaInvasao = 0;
+        if (ano == 1) forcaInvasao = 2;
+        if (ano == 2) forcaInvasao = 3;
+        sorteAdversaria = rand() % 6 + 1;
+        cout << "ForcaInv = " << forcaInvasao << " SorteInv = " << sorteAdversaria;
+        cout << " Resistencia do teu territorio " << (jogo[ultimoTerr[ultimoTerr.size() - 1]]->getResistencia() + resistenciaBonus) << endl;
+        if((forcaInvasao + sorteAdversaria) > (jogo[ultimoTerr[ultimoTerr.size()-1]]->getResistencia() + resistenciaBonus)){
+            cout << "Força Invasora conquistou o Territorio" << jogo[ultimoTerr[ultimoTerr.size() - 1]]->getNometerritorio() << endl;
+            jogo[ultimoTerr[ultimoTerr.size() - 1]]->setConquistaADM(false);
+            if (jogo[ultimoTerr[ultimoTerr.size() - 1]]->getNometerritorio() == jogo[jogo.size() - 1]->getNometerritorio())
+                ano = 4; // ano em que o jogador ganha o jogo
+            ultimoTerr.pop_back();
+
+        }
+        else {
+            cout << "A forca invasora falhou a conquista do territorio " << jogo[ultimoTerr[ultimoTerr.size() - 1]]->getNometerritorio() << endl;
+
+        }
+
+        return;
+    }
+    else if (i==3){
+        cout << "Alianca Diplomatica" << endl;
+        if (força_militar < força_militar_max) {
+            cout << "O jogador fez uma alianca com um imperio desconhecido. A sua forca militar aumenta 1 uni." << endl;
+            força_militar++;
+        }
+        else // caso a força militar tenha atingido o max nao incrementa a força mas considera-se que sim.
+            cout << "O jogador fez uma alianca com um imperio desconhecido.Mas sua forca militar ja esta ao maximo" << endl;
+
+    }
+    return;
 }
 
 void Interacao::status(){
@@ -636,15 +751,13 @@ void Interacao::listaTecs(){
 
 void Interacao::escrita_menus() {
     system("cls");
-
+    ultimoTerr.push_back(jogo.size()-1);
     srand((unsigned int)time(NULL));
 
-    while(1) {
+    while(ano<3) {
 
 
-        if(turno%6==0){
-            ano++;
-        }
+        
         
 
         status();
@@ -653,6 +766,12 @@ void Interacao::escrita_menus() {
         FaseRP();
         status();
         FaseCUMT();
+        status();
+        FaseFE();
+        if(turno%6==0){
+            ano++;
+        }
+        turno++;
     
 
         //comandos do turno de conquista passar

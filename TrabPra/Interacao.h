@@ -22,6 +22,9 @@ private:
 	bool fazerTrocas = false;
 	int resistenciaBonus = 0;
 	vector<Tecnologias*> tecs;
+	vector<int> ultimoTerr;
+	const vector<string> eventos {"Sem Evento","Recurso Abandonado","Invasao","Alianca Diplomatica" };
+
 
 public:
 	int comandline();
@@ -31,7 +34,7 @@ public:
 	void FaseCUMT();
 	void FaseFE();
 	void escrita_menus();
-	void conquistar();
+	//void conquistar();
 	void ListarTudo();
 	void ListarTerr(string nomeaux);
 	void ListarConquistados();
@@ -44,7 +47,9 @@ public:
 	void status();
 	void iniciaTecs();
 	void listaTecs();
+	void aplicaEvento();
 	Interacao();
+	
 	
 
 };
