@@ -25,7 +25,7 @@ public:
     int turnoConqDecre = 2;
     Montanha(string nome = "Montanha", int resistencia = 6, int produtos = 1, int ouro = 0, int pontos_vitoria = 1);
     ~Montanha();
-    int setConquista(int forca,int sorte,bool tec)override;
+    int setConquista(int forca,int sorte,bool tec,int nterr)override;
     void setConquistaADM(bool estado)override;
     int recolheOuro(int ano, int turno)override;
     int recolheProd(int ano, int turno)override;

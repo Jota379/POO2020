@@ -21,7 +21,7 @@ void Mundo_Territorios::setNomeTerritorio(string nome_territorio)
     this->nome_territorio=nome_territorio;
 }
 
-int Mundo_Territorios::setConquista(int forca,int sorte,bool tec)
+int Mundo_Territorios::setConquista(int forca,int sorte,bool tec, int nterr)
 {
     if ((forca + sorte) >= resistencia)
     {
@@ -38,8 +38,6 @@ void Mundo_Territorios::setConquistaADM(bool estado)
 
 int Mundo_Territorios::recolheOuro(int ano, int turno)
 {
-
-
     return 1;
 }
 

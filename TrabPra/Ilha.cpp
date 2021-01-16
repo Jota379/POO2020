@@ -7,14 +7,14 @@ using namespace std;
 int Refugio_Pirata::idRefugio_Pirata = 0;
 
 int Ilha::setConquista(int forca, int sorte, bool tec,int nterr){
-    if (tec=true && nterr >= 5) {
+    if (tec == true && nterr >= 5) {
         if ((forca + sorte) >= resistencia) {
             conquistado = true;
             return 0;
         }
         return 1;
     }
-    if(tec=true)
+    if(tec == false)
         return 2;
     return 3;
 }

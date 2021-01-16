@@ -55,7 +55,7 @@ Montanha::~Montanha() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
-int Montanha::setConquista(int forca, int sorte, bool tec)
+int Montanha::setConquista(int forca, int sorte, bool tec, int nterr)
 {
     if ((forca + sorte) >= resistencia)
     {

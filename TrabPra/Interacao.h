@@ -22,6 +22,7 @@ private:
 	bool fazerTrocas = false;
 	int resistenciaBonus = 0;
 	int nTerrConq = 1;
+	int idEventoPretendido = 4;
 	vector<Tecnologias*> tecs;
 	vector<int> ultimoTerr;
 	const vector<string> eventos {"Sem Evento","Recurso Abandonado","Invasao","Alianca Diplomatica" };
@@ -51,6 +52,7 @@ public:
 	void aplicaEvento();
 	void recolheTudo();
 	int buscaConq();
+	int buscaConqPont();
 	Interacao();
 	
 	

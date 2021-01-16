@@ -184,7 +184,7 @@ void Interacao::ListarConquistados() {
 
 void Interacao::FaseCP(){
 
-    string copia, str, cmd,nomeTerritorio,nomePesquisa;
+    string copia, str, cmd,nomeTerritorio,nomePesquisa,tipoDebug,nomeTipoDebug;
     bool verificaEscConqPass = false;
     int sucesso;
     mostra_comandos_CP();
@@ -201,6 +201,7 @@ void Interacao::FaseCP(){
         while (bufi >> str)
         {
             copia = str;
+
             if (copia == "conquista") {
                 bool existe = false; // verifica se o territorio existe
                 if (!verificaEscConqPass){
@@ -285,14 +286,142 @@ void Interacao::FaseCP(){
             }
             if (copia == "toma")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if (tipoDebug == "terr") {
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    bool existeDebug = false;
+                    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                            existeDebug = true;
+                            if (jogo[i]->getConquista() == false)
+                            {
+                                jogo[i]->setConquistaADM(true);
+                                cout << "O territorio" << jogo[i]->getNometerritorio() << "foi adquirido." << endl;
+                            }
+                            else if (jogo[i]->getConquista() == true) {
+                                cout << "Territorio já conquistado" << endl;
+                            }
+                        }
+                        if (!existeDebug)
+                            cout << "Territorio não existe" << endl;
+                    }
+                }
             }
+
+            if(tipoDebug == "tecs")
+            {
+                nomeTipoDebug = "";
+                bufi >> nomeTipoDebug;
+               if (nomeTipoDebug == "drone")
+               {
+                    if (tecs[0]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[0]->getNome() << endl;
+                        tecs[0 ]->setComprada();
+                        força_militar_max = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+               }
+
+               if (nomeTipoDebug == "missil")
+               {
+                    if (tecs[1]->getComprada() == false)
+                    {
+                        cout << "O jogador comprou a tecnologia " << tecs[1]->getNome() << endl;
+                        tecs[1]->setComprada();
+                        conquistaIlhas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                  
+               }
+
+               if (nomeTipoDebug == "defesa")
+               {
+                    if (tecs[2]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[2]->getNome() << endl;
+                        tecs[2]->setComprada();
+                        resistenciaBonus = 1;
+
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "bolsa")
+               {
+                    if (tecs[3]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[3]->getNome() << endl;
+                        tecs[3]->setComprada();
+                        fazerTrocas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "banco")
+               {
+                    if(tecs[4]->getComprada() == false){
+                        cout << "O jogador comprou a tecnologia " << tecs[4]->getNome() << endl;
+                        tecs[4]->setComprada();
+                        ouroMax = 5;
+                        produtosMax = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    } 
+               }
+            }
+
             if (copia == "modifica")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if(tipoDebug == "ouro"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    ouroTotal += stoi(nomeTipoDebug);
+                    if (ouroTotal > ouroMax)
+                        ouroTotal = ouroMax;
+                    cout << "Tem " << ouroTotal << "unidades de ouro no total" << endl;
+                }
+                if(tipoDebug == "prod"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    produtosTotal += stoi(nomeTipoDebug);
+                    if (produtosTotal > produtosMax)
+                        produtosTotal = produtosMax;
+                    cout << "Tem " << produtosTotal << "unidades de produtos no total" << endl;
+                }
             }
             if (copia == "fevento")
             {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+
+                if (tipoDebug == "Sem") {
+                    idEventoPretendido = 0;
+                }
+                if (tipoDebug == "Recurso") {
+                    idEventoPretendido = 1;
+                }
+                if (tipoDebug == "Invasao") {
+                    idEventoPretendido = 2;
+                }
+                if (tipoDebug == "Alianca") {
+                    idEventoPretendido = 3;
+
+                }
+
+
 
             }
 
@@ -301,7 +430,7 @@ void Interacao::FaseCP(){
 }
 
 void Interacao::FaseRP(){
-    string copia, str, cmd, nomePesquisa;
+    string copia, str, cmd, nomePesquisa,nomeTipoDebug,tipoDebug,nomeTerritorio;
     bool verificaTrocas = false;
     mostra_comandos_RP();
 
@@ -319,27 +448,32 @@ void Interacao::FaseRP(){
             copia = str;
             if (copia == "maisprod")
             {
-                if (!verificaTrocas)
-                {
-                    if (ouroTotal >= 2 && produtosTotal < produtosMax) {
-                        cout << "O jogador trocou 2 uni. de ouro por 1 uni. de prod" << endl;
-                        produtosTotal++;
-                        ouroTotal -= 2;
-                        verificaTrocas = true;
+                if (fazerTrocas) {
+                    if (!verificaTrocas)
+                    {
+                        if (ouroTotal >= 2 && produtosTotal < produtosMax) {
+                            cout << "O jogador trocou 2 uni. de ouro por 1 uni. de prod" << endl;
+                            produtosTotal++;
+                            ouroTotal -= 2;
+                            verificaTrocas = true;
+                        }
+                        else
+                            if (produtosMax == produtosTotal)
+                                cout << "Já tem a quantidade maxima de produtos" << endl;
+                            else
+                                cout << "O jogador não tem ouro suficiente para fazer a troca !" << endl;
                     }
                     else
-                        if (produtosMax == produtosTotal)
-                            cout << "Já tem a quantidade maxima de produtos" << endl;
-                        else
-                            cout << "O jogador não tem ouro suficiente para fazer a troca !" << endl;
+                        cout << "Ja fez a opcao possivel neste turno !" << endl;
                 }
                 else
-                    cout << "Ja fez a opcao possivel neste turno !" << endl;
+                    cout << "Não tem a tecnologia" << tecs[3]->getNome() << endl;
             }
             if (copia == "maisouro")
             {
+                if (fazerTrocas) {
                 if (!verificaTrocas){
-                    if (ouroTotal >= 2 && ouroTotal < ouroMax) {
+                    if (produtosTotal >= 2 && ouroTotal < ouroMax) {
                         cout << "O jogador trocou 2 uni. de produtos por 1 uni. de ouro" << endl;
                         ouroTotal++;
                         produtosTotal -= 2;
@@ -355,6 +489,9 @@ void Interacao::FaseRP(){
                 {
                     cout << "Ja fez a operacao neste turno !" << endl;
                 }
+                }
+                else
+                    cout << "Não tem a tecnologia" << tecs[3]->getNome() << endl;
             }
             if (copia == "lista") {
                 nomePesquisa = "";
@@ -386,14 +523,142 @@ void Interacao::FaseRP(){
             }
             if (copia == "toma")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if (tipoDebug == "terr") {
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    bool existeDebug = false;
+                    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                            existeDebug = true;
+                            if (jogo[i]->getConquista() == false)
+                            {
+                                jogo[i]->setConquistaADM(true);
+                                cout << "O territorio" << jogo[i]->getNometerritorio() << "foi adquirido." << endl;
+                            }
+                            else if (jogo[i]->getConquista() == true) {
+                                cout << "Territorio já conquistado" << endl;
+                            }
+                        }
+                        if (!existeDebug)
+                            cout << "Territorio não existe" << endl;
+                    }
+                }
             }
+
+            if(tipoDebug == "tecs")
+            {
+                nomeTipoDebug = "";
+                bufi >> nomeTipoDebug;
+               if (nomeTipoDebug == "drone")
+               {
+                    if (tecs[0]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[0]->getNome() << endl;
+                        tecs[0 ]->setComprada();
+                        força_militar_max = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+               }
+
+               if (nomeTipoDebug == "missil")
+               {
+                    if (tecs[1]->getComprada() == false)
+                    {
+                        cout << "O jogador comprou a tecnologia " << tecs[1]->getNome() << endl;
+                        tecs[1]->setComprada();
+                        conquistaIlhas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                  
+               }
+
+               if (nomeTipoDebug == "defesa")
+               {
+                    if (tecs[2]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[2]->getNome() << endl;
+                        tecs[2]->setComprada();
+                        resistenciaBonus = 1;
+
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "bolsa")
+               {
+                    if (tecs[3]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[3]->getNome() << endl;
+                        tecs[3]->setComprada();
+                        fazerTrocas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "banco")
+               {
+                    if(tecs[4]->getComprada() == false){
+                        cout << "O jogador comprou a tecnologia " << tecs[4]->getNome() << endl;
+                        tecs[4]->setComprada();
+                        ouroMax = 5;
+                        produtosMax = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    } 
+               }
+            }
+
             if (copia == "modifica")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if(tipoDebug == "ouro"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    ouroTotal += stoi(nomeTipoDebug);
+                    if (ouroTotal > ouroMax)
+                        ouroTotal = ouroMax;
+                    cout << "Tem " << ouroTotal << "unidades de ouro no total" << endl;
+                }
+                if(tipoDebug == "prod"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    produtosTotal += stoi(nomeTipoDebug);
+                    if (produtosTotal > produtosMax)
+                        produtosTotal = produtosMax;
+                    cout << "Tem " << produtosTotal << "unidades de produtos no total" << endl;
+                }
             }
             if (copia == "fevento")
             {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+
+                if (tipoDebug == "Sem") {
+                    idEventoPretendido = 0;
+                }
+                if (tipoDebug == "Recurso") {
+                    idEventoPretendido = 1;
+                }
+                if (tipoDebug == "Invasao") {
+                    idEventoPretendido = 2;
+                }
+                if (tipoDebug == "Alianca") {
+                    idEventoPretendido = 3;
+
+                }
+
+
 
             }
 
@@ -402,7 +667,7 @@ void Interacao::FaseRP(){
 }
 
 void Interacao::FaseCUMT(){
-    string copia, str, cmd, nomePesquisa, tipo;
+    string copia, str, cmd, nomePesquisa, tipo, nomeTipoDebug, tipoDebug, nomeTerritorio;
     bool verificaCompras = false;
     mostra_comandos_CUMT();
     cout << "=====Loja=====" << endl;
@@ -551,6 +816,8 @@ void Interacao::FaseCUMT(){
                     if (ouroTotal >= 1 && produtosTotal >= 1 && força_militar < força_militar_max) {
                         cout << "O jogador obteve mais 1 uni. de forca militar." << endl;
                         força_militar++;
+                        ouroTotal--;
+                        produtosTotal--;
                         verificaCompras = true;
                     }
                     else {
@@ -597,14 +864,142 @@ void Interacao::FaseCUMT(){
             }
             if (copia == "toma")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if (tipoDebug == "terr") {
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    bool existeDebug = false;
+                    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                            existeDebug = true;
+                            if (jogo[i]->getConquista() == false)
+                            {
+                                jogo[i]->setConquistaADM(true);
+                                cout << "O territorio" << jogo[i]->getNometerritorio() << "foi adquirido." << endl;
+                            }
+                            else if (jogo[i]->getConquista() == true) {
+                                cout << "Territorio já conquistado" << endl;
+                            }
+                        }
+                        if (!existeDebug)
+                            cout << "Territorio não existe" << endl;
+                    }
+                }
             }
+
+            if(tipoDebug == "tecs")
+            {
+                nomeTipoDebug = "";
+                bufi >> nomeTipoDebug;
+               if (nomeTipoDebug == "drone")
+               {
+                    if (tecs[0]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[0]->getNome() << endl;
+                        tecs[0 ]->setComprada();
+                        força_militar_max = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+               }
+
+               if (nomeTipoDebug == "missil")
+               {
+                    if (tecs[1]->getComprada() == false)
+                    {
+                        cout << "O jogador comprou a tecnologia " << tecs[1]->getNome() << endl;
+                        tecs[1]->setComprada();
+                        conquistaIlhas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                  
+               }
+
+               if (nomeTipoDebug == "defesa")
+               {
+                    if (tecs[2]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[2]->getNome() << endl;
+                        tecs[2]->setComprada();
+                        resistenciaBonus = 1;
+
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "bolsa")
+               {
+                    if (tecs[3]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[3]->getNome() << endl;
+                        tecs[3]->setComprada();
+                        fazerTrocas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "banco")
+               {
+                    if(tecs[4]->getComprada() == false){
+                        cout << "O jogador comprou a tecnologia " << tecs[4]->getNome() << endl;
+                        tecs[4]->setComprada();
+                        ouroMax = 5;
+                        produtosMax = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    } 
+               }
+            }
+
             if (copia == "modifica")
             {
-
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if(tipoDebug == "ouro"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    ouroTotal += stoi(nomeTipoDebug);
+                    if (ouroTotal > ouroMax)
+                        ouroTotal = ouroMax;
+                    cout << "Tem " << ouroTotal << "unidades de ouro no total" << endl;
+                }
+                if(tipoDebug == "prod"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    produtosTotal += stoi(nomeTipoDebug);
+                    if (produtosTotal > produtosMax)
+                        produtosTotal = produtosMax;
+                    cout << "Tem " << produtosTotal << "unidades de produtos no total" << endl;
+                }
             }
             if (copia == "fevento")
             {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+
+                if (tipoDebug == "Sem") {
+                    idEventoPretendido = 0;
+                }
+                if (tipoDebug == "Recurso") {
+                    idEventoPretendido = 1;
+                }
+                if (tipoDebug == "Invasao") {
+                    idEventoPretendido = 2;
+                }
+                if (tipoDebug == "Alianca") {
+                    idEventoPretendido = 3;
+
+                }
+
+
 
             }
 
@@ -614,7 +1009,7 @@ void Interacao::FaseCUMT(){
 
 void Interacao::FaseFE()
 {
-    string copia, str, cmd, nomePesquisa, tipo;
+    string copia, str, cmd, nomePesquisa, tipo, nomeTipoDebug, tipoDebug, nomeTerritorio;
 
     aplicaEvento();
     mostra_comandos_FE();
@@ -661,24 +1056,157 @@ void Interacao::FaseFE()
 
                 }
                 if (copia == "toma")
-                {
-
+            {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if (tipoDebug == "terr") {
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    bool existeDebug = false;
+                    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
+                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                            existeDebug = true;
+                            if (jogo[i]->getConquista() == false)
+                            {
+                                jogo[i]->setConquistaADM(true);
+                                cout << "O territorio" << jogo[i]->getNometerritorio() << "foi adquirido." << endl;
+                            }
+                            else if (jogo[i]->getConquista() == true) {
+                                cout << "Territorio já conquistado" << endl;
+                            }
+                        }
+                        if (!existeDebug)
+                            cout << "Territorio não existe" << endl;
+                    }
                 }
-                if (copia == "modifica")
-                {
-
-                }
-                if (copia == "fevento")
-                {
-
-                }
-
             }
+
+            if(tipoDebug == "tecs")
+            {
+                nomeTipoDebug = "";
+                bufi >> nomeTipoDebug;
+               if (nomeTipoDebug == "drone")
+               {
+                    if (tecs[0]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[0]->getNome() << endl;
+                        tecs[0 ]->setComprada();
+                        força_militar_max = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+               }
+
+               if (nomeTipoDebug == "missil")
+               {
+                    if (tecs[1]->getComprada() == false)
+                    {
+                        cout << "O jogador comprou a tecnologia " << tecs[1]->getNome() << endl;
+                        tecs[1]->setComprada();
+                        conquistaIlhas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                  
+               }
+
+               if (nomeTipoDebug == "defesa")
+               {
+                    if (tecs[2]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[2]->getNome() << endl;
+                        tecs[2]->setComprada();
+                        resistenciaBonus = 1;
+
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "bolsa")
+               {
+                    if (tecs[3]->getComprada() == false) {
+                        cout << "O jogador comprou a tecnologia " << tecs[3]->getNome() << endl;
+                        tecs[3]->setComprada();
+                        fazerTrocas = true;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    }
+                   
+               }
+
+               if (nomeTipoDebug == "banco")
+               {
+                    if(tecs[4]->getComprada() == false){
+                        cout << "O jogador comprou a tecnologia " << tecs[4]->getNome() << endl;
+                        tecs[4]->setComprada();
+                        ouroMax = 5;
+                        produtosMax = 5;
+                    }
+                    else {
+                        cout << "Ja comprou o artigo" << endl;
+                    } 
+               }
+            }
+
+            if (copia == "modifica")
+            {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+                if(tipoDebug == "ouro"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    ouroTotal += stoi(nomeTipoDebug);
+                    if (ouroTotal > ouroMax)
+                        ouroTotal = ouroMax;
+                    cout << "Tem " << ouroTotal << "unidades de ouro no total" << endl;
+                }
+                if(tipoDebug == "prod"){
+                    nomeTipoDebug = "";
+                    bufi >> nomeTipoDebug;
+                    produtosTotal += stoi(nomeTipoDebug);
+                    if (produtosTotal > produtosMax)
+                        produtosTotal = produtosMax;
+                    cout << "Tem " << produtosTotal << "unidades de produtos no total" << endl;
+                }
+            }
+            if (copia == "fevento")
+            {
+                tipoDebug = "";
+                bufi >> tipoDebug;
+
+                if (tipoDebug == "Sem") {
+                    idEventoPretendido = 0;
+                }
+                if (tipoDebug == "Recurso") {
+                    idEventoPretendido = 1;
+                }
+                if (tipoDebug == "Invasao") {
+                    idEventoPretendido = 2;
+                }
+                if (tipoDebug == "Alianca") {
+                    idEventoPretendido = 3;
+                }
+            }
+
         }
+    }
 }
 
 void Interacao::aplicaEvento(){
-    int i = rand() % 4;
+    
+
+    int i; 
+    if(idEventoPretendido == 4)
+        i = rand() % 4;
+    else{
+        i = idEventoPretendido;
+        idEventoPretendido = 4;
+    }
+
     
     if (i == 0)
     {
@@ -687,10 +1215,14 @@ void Interacao::aplicaEvento(){
     }
     else if (i==1) {
         cout << "Recurso Abandonado" << endl;
-        if (ano == 1 && produtosTotal < produtosMax)
+        if (ano == 1 && produtosTotal < produtosMax) {
+            cout << "Foi encontrado 1 uni. de produtos" << endl;
             produtosTotal++;
-        else if (ano == 2 && ouroTotal < ouroMax)
+        }
+        else if (ano == 2 && ouroTotal < ouroMax) {
+            cout << "Foi encontrado 1 uni. de ouro" << endl;
             ouroTotal++;
+        }
         return;
     }
     else if (i==2) {
@@ -763,6 +1295,15 @@ int Interacao::buscaConq(){
     return nt;
 
 }
+int Interacao::buscaConqPont(){
+    int pontos=0;
+    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
+        if (jogo[i]->getConquista() == true)
+            pontos+= jogo[i]->getPontosVitoria();
+    }
+    return pontos;
+
+}
 
 void Interacao::recolheTudo(){
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
@@ -782,7 +1323,7 @@ void Interacao::escrita_menus() {
     ultimoTerr.push_back(jogo.size()-1);
     srand((unsigned int)time(NULL));
 
-    while(ano<3) {
+    while(ano < 3 || buscaConq() < 1) {
 
         nTerrConq = buscaConq();
         status();
@@ -831,6 +1372,26 @@ void Interacao::escrita_menus() {
         //case 0:
         //    exit(0);
         //}
+    }
+    if (buscaConq() < 1)
+        cout << "Fantastico conseguiste a unica maneira de perderes o jogo" << endl << "===========GAMEOVER==========" << endl;
+    else{
+        int pTerritorios, pImpSup=0, pTecs=0, pBonCien=0;
+        pTerritorios = buscaConqPont();
+        if (buscaConq() == jogo.size())
+            pImpSup = 3;
+        for (unsigned int i = 0; i < tecs.size(); i++) {
+            if (tecs[i]->getComprada() == true)
+                pTecs++;
+        }
+        if (pTecs == tecs.size())
+            pBonCien = 1;
+        cout << "Pontuacao:" << endl
+            << "\t" << "Territorios: " << pTerritorios << endl
+            << "\t" << "Imperador Supremo?" << pImpSup << endl
+            << "\t" << "Tecnologias:" << pTecs << endl
+            << "\t" << "Bonus Cientifico" << pBonCien << endl
+            << "\t" << "Pontuacao Final:" << (pTerritorios+pImpSup+pTecs+pBonCien) << endl;
     }
 }
 
@@ -1057,12 +1618,13 @@ void Interacao::carregar(string nomefich) {
                     else
                         if (copia == "sair")
                         {
-                            exit(0);
+                            return;
                         }
                         else
                         {
                             cout << "\tO comando não existe,por favor verifique a integridade do ficheiro ou cite um ficheiro valido" << endl;
-                            exit(1);
+                            jogo.clear();
+                            return;
                             while (bufi >> lixo)
                             {
                             }
@@ -1249,7 +1811,7 @@ int Interacao::comandline() {
                                 maxr = 1;
                             }
                         }
-                    }
+                    } 
                     if (tipoTerritorio == "Montanha")
                     {
                         if (bufi >> rep) {
@@ -1273,7 +1835,6 @@ int Interacao::comandline() {
                     }
                 }
                 else
-
                     if (copia == "lista")
                     {
                         cout << "executei o Lista \n";
