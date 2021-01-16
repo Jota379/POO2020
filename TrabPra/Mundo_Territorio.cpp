@@ -36,6 +36,18 @@ void Mundo_Territorios::setConquistaADM(bool estado)
     conquistado = estado;
 }
 
+int Mundo_Territorios::recolheOuro(int ano, int turno)
+{
+
+
+    return 1;
+}
+
+int Mundo_Territorios::recolheProd(int ano, int turno)
+{
+    return 1;
+}
+
 string Mundo_Territorios::getNometerritorio() const
 {
     ostringstream os;

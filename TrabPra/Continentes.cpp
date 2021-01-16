@@ -22,6 +22,20 @@ Planicie::~Planicie() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Planicie::recolheOuro(int ano, int turno)
+{
+    return 1;
+}
+
+int Planicie::recolheProd(int ano, int turno)
+{
+    if(ano == 1)
+        return 1;
+    if(ano == 2)
+        return 2;
+    return 0;
+}
+
 int Montanha::idMontanha = 0;
 
 Montanha::Montanha(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
@@ -39,6 +53,36 @@ Montanha::Montanha(string nome, int resistencia, int produtos, int ouro, int pon
 
 Montanha::~Montanha() {
     cout << "Destrui " << getNometerritorio() << endl;
+}
+
+int Montanha::setConquista(int forca, int sorte, bool tec)
+{
+    if ((forca + sorte) >= resistencia)
+    {
+        turnoConqDecre = 2;
+        conquistado = true;
+        return 0;
+    } 
+    return 1;
+}
+
+void Montanha::setConquistaADM(bool estado)
+{
+    turnoConqDecre = 2;
+    conquistado = estado;
+}
+
+int Montanha::recolheOuro(int ano, int turno)
+{   
+    turnoConqDecre--;
+    return 0;
+}
+
+int Montanha::recolheProd(int ano, int turno)
+{   
+    if (turnoConqDecre < 0)
+        return 1;
+    return 0;
 }
 
 int Fortaleza::idFortaleza = 0;
@@ -60,6 +104,16 @@ Fortaleza::~Fortaleza() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Fortaleza::recolheOuro(int ano, int turno)
+{
+    return 0;
+}
+
+int Fortaleza::recolheProd(int ano, int turno)
+{
+    return 0;
+}
+
 int Mina::idMina = 0;
 
 Mina::Mina(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
@@ -77,6 +131,22 @@ Mina::Mina(string nome, int resistencia, int produtos, int ouro, int pontos_vito
 
 Mina::~Mina() {
     cout << "Destrui " << getNometerritorio() << endl;
+}
+
+int Mina::recolheOuro(int ano, int turno)
+{
+    if (turno > 6)
+        turno = turno - 6;
+    if (turno < 4)
+        return 1;
+    else if (turno < 7)
+        return 2;
+    return 0;
+}
+
+int Mina::recolheProd(int ano, int turno)
+{
+    return 0;
 }
 
 int Duna::idDuna = 0;
@@ -98,6 +168,17 @@ Duna::~Duna() {
     cout << "Destrui " << getNometerritorio() << endl;
 }
 
+int Duna::recolheOuro(int ano, int turno)
+{
+    
+    return 0;
+}
+
+int Duna::recolheProd(int ano, int turno)
+{
+    return 1;
+}
+
 int Castelo::idCastelo = 0;
 
 Castelo::Castelo(string nome, int resistencia, int produtos, int ouro, int pontos_vitoria) {
@@ -114,4 +195,18 @@ Castelo::Castelo(string nome, int resistencia, int produtos, int ouro, int ponto
 
 Castelo::~Castelo() {
     cout << "Destrui " << getNometerritorio() << endl;
+}
+
+int Castelo::recolheOuro(int ano, int turno)
+{
+    return 1;
+}
+
+int Castelo::recolheProd(int ano, int turno)
+{
+    if (turno > 6)
+        turno = turno - 6;
+    if (turno < 3)
+        return 3;
+    return 0;
 }

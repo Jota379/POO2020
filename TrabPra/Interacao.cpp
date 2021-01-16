@@ -16,6 +16,7 @@ Interacao::Interacao(){
     força_militar = rand() % 4;
 }
 
+
 void Interacao::mostra_menu()const{
     cout << "1. Conquistar / Passar" << endl;
     cout << "2. Recolha de Produtos ou ouro" << endl;
@@ -210,7 +211,7 @@ void Interacao::FaseCP(){
                             if (jogo[i]->getConquista() == false) {
                                 sorte = rand() % 6 + 1;
                                 cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
-                                sucesso = jogo[i]->setConquista(força_militar, sorte, conquistaIlhas);
+                                sucesso = jogo[i]->setConquista(força_militar, sorte, conquistaIlhas,nTerrConq);
                                 if (sucesso == 0){ 
                                         cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
                                         verificaEscConqPass = true;
@@ -224,6 +225,9 @@ void Interacao::FaseCP(){
                                 }
                                 else if (sucesso == 2){
                                     cout << "Não tem a tecnologia " << tecs[1]->getNome() << " para conquistar uma ilha !" <<endl;
+                                }
+                                else if (sucesso == 3){
+                                    cout << "Não tem 5 ou mais territorios" << endl;
                                 }
                             }
                             else if (jogo[i]->getConquista() == true) {
@@ -611,6 +615,7 @@ void Interacao::FaseCUMT(){
 void Interacao::FaseFE()
 {
     string copia, str, cmd, nomePesquisa, tipo;
+
     aplicaEvento();
     mostra_comandos_FE();
 
@@ -671,7 +676,6 @@ void Interacao::FaseFE()
             }
         }
 }
-
 
 void Interacao::aplicaEvento(){
     int i = rand() % 4;
@@ -742,11 +746,35 @@ void Interacao::iniciaTecs(){ // criação das tecnologias
     tecs.push_back(new Tecnologias("Bolsa de valores", 2));
     tecs.push_back(new Tecnologias("Banco central", 3));
 }
+
 void Interacao::listaTecs(){
     ostringstream oss;
     for (unsigned int i = 0; i < tecs.size(); i++) // listar todos as Tecnologias
         oss << tecs[i]->getAsString();
     cout << oss.str();
+}
+
+int Interacao::buscaConq(){
+    int nt=0;
+    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
+        if (jogo[i]->getConquista() == true)
+            nt++;
+    }
+    return nt;
+
+}
+
+void Interacao::recolheTudo(){
+    for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
+        if (jogo[i]->getConquista() == true) {
+            ouroTotal += jogo[i]->recolheOuro(ano, turno);
+            produtosTotal += jogo[i]->recolheProd(ano, turno);
+        }
+    }
+    if (ouroTotal > ouroMax)
+        ouroTotal = ouroMax;
+    if (produtosTotal > produtosMax)
+        produtosTotal = produtosMax;
 }
 
 void Interacao::escrita_menus() {
@@ -756,10 +784,7 @@ void Interacao::escrita_menus() {
 
     while(ano<3) {
 
-
-        
-        
-
+        nTerrConq = buscaConq();
         status();
         FaseCP();
         status();
@@ -768,6 +793,7 @@ void Interacao::escrita_menus() {
         FaseCUMT();
         status();
         FaseFE();
+        recolheTudo();
         if(turno%6==0){
             ano++;
         }

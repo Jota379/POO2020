@@ -21,6 +21,7 @@ private:
 	bool conquistaIlhas = false;
 	bool fazerTrocas = false;
 	int resistenciaBonus = 0;
+	int nTerrConq = 1;
 	vector<Tecnologias*> tecs;
 	vector<int> ultimoTerr;
 	const vector<string> eventos {"Sem Evento","Recurso Abandonado","Invasao","Alianca Diplomatica" };
@@ -48,6 +49,8 @@ public:
 	void iniciaTecs();
 	void listaTecs();
 	void aplicaEvento();
+	void recolheTudo();
+	int buscaConq();
 	Interacao();
 	
 	

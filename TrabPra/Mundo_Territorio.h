@@ -24,8 +24,10 @@ public:
 
     //funções set 
     void setNomeTerritorio(string nome_territorio);
-    virtual int setConquista(int forca,int sorte,bool tec);
-    void setConquistaADM(bool estado);
+    virtual int setConquista(int forca,int sorte,bool tec,int nterr);
+    virtual void setConquistaADM(bool estado);
+    virtual int recolheOuro(int ano,int turno);
+    virtual int recolheProd(int ano,int turno);
 
     //funções get
     string getNometerritorio() const;
