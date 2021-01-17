@@ -45,16 +45,6 @@ int Refugio_Pirata::recolheProd(int ano, int turno)
     return 0;
 }
 
-//int Refugio_Pirata::setConquista(int forca, int sorte, bool tec){
-//    if (tec) {
-//        if ((forca + sorte) >= resistencia) {
-//            conquistado = true;
-//            return 0;
-//        }
-//        return 1;
-//    }
-//    return 2;
-//}
 
 int Pescaria::idPescaria = 0;
 
@@ -87,14 +77,3 @@ int Pescaria::recolheProd(int ano, int turno)
         return 4;
     return 0;
 }
-
-//int Pescaria::setConquista(int forca, int sorte, bool tec){
-//    if (tec) {
-//        if ((forca + sorte) >= resistencia) {
-//            conquistado = true;
-//            return 0;
-//        }
-//        return 1;
-//    }
-//    return 2;
-//}

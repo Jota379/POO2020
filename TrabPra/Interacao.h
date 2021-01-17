@@ -30,7 +30,6 @@ private:
 
 public:
 	int comandline();
-	void mostra_menu()const;
 	void FaseCP();
 	void FaseRP();
 	void FaseCUMT();
@@ -54,6 +53,7 @@ public:
 	int buscaConq();
 	int buscaConqPont();
 	Interacao();
+	~Interacao();
 	
 	
 

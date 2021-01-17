@@ -12,22 +12,20 @@
 
 using namespace std;
 
+//esta função dá um valor aleatorio entre 1 a 3 para definir a força militar inicial
 Interacao::Interacao(){
     força_militar = rand() % 4;
 }
-
-
-void Interacao::mostra_menu()const{
-    cout << "1. Conquistar / Passar" << endl;
-    cout << "2. Recolha de Produtos ou ouro" << endl;
-    cout << "3. Compra de unidades militares e de tecnologia" << endl;
-    cout << "4. Ocorrência de um evento" << endl;
-    cout << "5. Lista" << endl;
-    cout << "0. Sair" << endl;
-    return;
+Interacao::~Interacao()
+{
+    cout << "Destruir o jogo" << endl;
+    jogo.clear();
+    tecs.clear();
+    ultimoTerr.clear();
 }
 
 
+//lista comandos possiveis na fase de conquista
 void Interacao::mostra_comandos_CP(){
 
     cout << "=====Fase Conquistar/Passar====="
@@ -45,6 +43,7 @@ void Interacao::mostra_comandos_CP(){
         << "\tfevento <nome-evento>" << endl;
 }
 
+//lista comandos possiveis na fase de recolha
 void Interacao::mostra_comandos_RP(){
     cout << "=====Fase Recolha de Produtos e Ouro=====" << endl
         << "Comandos:" << endl
@@ -61,6 +60,7 @@ void Interacao::mostra_comandos_RP(){
         << "\tfevento <nome-evento>" << endl;
 }
 
+//lista comandos possiveis na fase de Compra
 void Interacao::mostra_comandos_CUMT(){
     cout << "=====Fase Forca Militar | Tecnologias====="
         << "Comandos:" << endl
@@ -77,6 +77,7 @@ void Interacao::mostra_comandos_CUMT(){
         << "\tfevento <nome-evento>" << endl;
 }
 
+//lista comandos possiveis na fase de eventos
 void Interacao::mostra_comandos_FE() {
 
     cout << "=====Fase Eventos====="
@@ -92,70 +93,7 @@ void Interacao::mostra_comandos_FE() {
         << "\tfevento <nome-evento>" << endl;
 }
 
-/*void Interacao::conquistar(){
-    system("cls");
-    int esc;
-    ostringstream oss;
-    string terrPretendido;
-    srand((unsigned int)time(NULL));
-    bool existe = false; // verifica se o territorio existe
-    bool sucesso;
-
-
-    cout << "FORCA MILITAR:" << força_militar << "\tULTIMA SORTE: " << sorte << endl;
-    cout << "1: Listar" << endl;
-    cout << "2: Conquistar" << endl;
-    cout << "3: Passar Turno" << endl;
-    cin >> esc;
-    switch (esc) {
-    case 1:
-        cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
-        for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
-            oss << jogo[i]->getAsString();
-        cout << oss.str();
-        break;
-    case 2:
-        cout << "Escreva o nome do territorio Pretendido ->";
-        cin >> terrPretendido;
-        for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-            if (terrPretendido == jogo[i]->getNometerritorio()) {
-                existe = true;
-                if (jogo[i]->getConquista() == false) {
-                    sorte = rand() % 6 + 1;
-                    cout << "Fator sorte: " << sorte << endl; // gerar valor aleatório entre 1 e 6 inclusive
-                    sucesso = jogo[i]->setConquista(força_militar,sorte,tecs[1]->getComprada());
-                    if (sucesso) {
-                        cout << "Territorio " << jogo[i]->getNometerritorio() << " Conquistado" << endl;
-                        ultimoTerr = jogo[i]->getNometerritorio();
-                    }
-                    else{
-
-                    }
-                    
-                }
-                else if (jogo[i]->getConquista() == true) {
-                    cout << "Territorio já conquistado" << endl;
-                    break;
-                }  
-                else
-                {
-                    cout << "Falhou a Conquista do Territorio " << jogo[i]->getNometerritorio() << endl;
-                    if(força_militar>0)
-                        força_militar--;
-                }
-            }
-        }
-        if (!existe)
-            {
-            cout << "Territorio Não Exite" << endl;
-            }
-            
-        break;
-    case 3:
-        break;
-    }
-}*/
-
+//listar todos os territorios
 void Interacao::ListarTudo() {
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
@@ -164,6 +102,7 @@ void Interacao::ListarTudo() {
 
 }
 
+//listar territorio especifico
 void Interacao::ListarTerr(string nomeaux) {
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) {// listar todos os territórios com um certo nome
@@ -173,6 +112,7 @@ void Interacao::ListarTerr(string nomeaux) {
     cout << oss.str();
 }
 
+//listar territorios conquistados
 void Interacao::ListarConquistados() {
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
@@ -182,6 +122,7 @@ void Interacao::ListarConquistados() {
     cout << oss.str();
 }
 
+//Função responsavel pela fase de conquista
 void Interacao::FaseCP(){
 
     string copia, str, cmd,nomeTerritorio,nomePesquisa,tipoDebug,nomeTipoDebug;
@@ -429,6 +370,7 @@ void Interacao::FaseCP(){
     }
 }
 
+//Função responsavel pela fase de recolha
 void Interacao::FaseRP(){
     string copia, str, cmd, nomePesquisa,nomeTipoDebug,tipoDebug,nomeTerritorio;
     bool verificaTrocas = false;
@@ -666,6 +608,7 @@ void Interacao::FaseRP(){
     }
 }
 
+//função responsavel pela fase de compra
 void Interacao::FaseCUMT(){
     string copia, str, cmd, nomePesquisa, tipo, nomeTipoDebug, tipoDebug, nomeTerritorio;
     bool verificaCompras = false;
@@ -1007,6 +950,7 @@ void Interacao::FaseCUMT(){
     }
 }
 
+//função responsavel pela fase de evento
 void Interacao::FaseFE()
 {
     string copia, str, cmd, nomePesquisa, tipo, nomeTipoDebug, tipoDebug, nomeTerritorio;
@@ -1196,6 +1140,7 @@ void Interacao::FaseFE()
     }
 }
 
+//função responsavel por aplicar o evento escolheido ou faze-lo de forma aleatoria
 void Interacao::aplicaEvento(){
     
 
@@ -1262,6 +1207,7 @@ void Interacao::aplicaEvento(){
     return;
 }
 
+//Mostra os dados do Jogador e sua ultima sorte 
 void Interacao::status(){
     cout << "ANO: " << ano << endl;
     cout << "TURNO: " << turno << endl;
@@ -1271,21 +1217,25 @@ void Interacao::status(){
     cout << "PRODUTOS: " << produtosTotal << endl;
 }
 
+//inicia as tecnologias
 void Interacao::iniciaTecs(){ // criação das tecnologias
-    tecs.push_back(new Tecnologias("Drones militares", 3));
-    tecs.push_back(new Tecnologias("Misseis teleguiados", 4));
-    tecs.push_back(new Tecnologias("Defesas Territoriais", 4));
-    tecs.push_back(new Tecnologias("Bolsa de valores", 2));
-    tecs.push_back(new Tecnologias("Banco central", 3));
+    tecs.push_back(new Tecnologias("Drones militares", 3,"drone"));
+    tecs.push_back(new Tecnologias("Misseis teleguiados", 4,"missil"));
+    tecs.push_back(new Tecnologias("Defesas Territoriais", 4,"defesa"));
+    tecs.push_back(new Tecnologias("Bolsa de valores", 2,"bolsa"));
+    tecs.push_back(new Tecnologias("Banco central", 3,"banco"));
 }
 
+//lista as tecnologias
 void Interacao::listaTecs(){
     ostringstream oss;
+    cout << "Nome Tec." << "\t" << "estado" << "\t" << "comando" << endl;
     for (unsigned int i = 0; i < tecs.size(); i++) // listar todos as Tecnologias
         oss << tecs[i]->getAsString();
     cout << oss.str();
 }
 
+//retorna numero de terr conquistados
 int Interacao::buscaConq(){
     int nt=0;
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
@@ -1295,6 +1245,8 @@ int Interacao::buscaConq(){
     return nt;
 
 }
+
+//retorna pontuação de conquista dos territorios
 int Interacao::buscaConqPont(){
     int pontos=0;
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
@@ -1305,6 +1257,7 @@ int Interacao::buscaConqPont(){
 
 }
 
+//recolhe os materiais(ouro e prod) de cada territorio conquistado
 void Interacao::recolheTudo(){
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
         if (jogo[i]->getConquista() == true) {
@@ -1318,6 +1271,7 @@ void Interacao::recolheTudo(){
         produtosTotal = produtosMax;
 }
 
+//trata da interligação entre as fazes e o processo de pontuação basicamente a função "principal" do jogo em si
 void Interacao::escrita_menus() {
     system("cls");
     ultimoTerr.push_back(jogo.size()-1);
@@ -1395,6 +1349,7 @@ void Interacao::escrita_menus() {
     }
 }
 
+//trata de inicializar as coisas antes do jogo
 void Interacao::comeca_jogo() {
     cout << "Entrou no jogo" << endl;
     iniciaTecs();
@@ -1402,6 +1357,7 @@ void Interacao::comeca_jogo() {
     
 }
 
+//trata do carregar(feito antes do jogo) a partir de um ficheiro
 void Interacao::carregar(string nomefich) {
     int maxr = 1;
 
@@ -1634,6 +1590,7 @@ void Interacao::carregar(string nomefich) {
     return;
 }
 
+//trata da criação do mundo feita antes de começar o jogo
 int Interacao::comandline() {
     int maxr = 1;
 

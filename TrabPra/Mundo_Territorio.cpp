@@ -81,4 +81,5 @@ string Mundo_Territorios::getAsString() const {
 
 Mundo_Territorios::~Mundo_Territorios()
 {
+    cout << "Destrui" << nome_territorio << endl;
 }

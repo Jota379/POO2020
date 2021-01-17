@@ -11,14 +11,14 @@ private:
 	//bool defesas_Territoriais = false;
 	//bool bolsa_Valores = false;
 	//bool banco_Central = false;
-	string nome;
+	string nome,comando;
 	int preco;
 	bool comprada = false;
 
 
 public:
 
-	Tecnologias(string nome, int preco);
+	Tecnologias(string nome, int preco,string cmd);
 	//get
 	bool getComprada()const;
 	string getNome()const;
