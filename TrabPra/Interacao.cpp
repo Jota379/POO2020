@@ -1357,11 +1357,27 @@ void Interacao::escrita_menus() {
     }
 }
 
+void Interacao::resetVar() {
+    força_militar_max = 3;
+    turno = 1, ano = 1;
+    ouroTotal = 0;
+    produtosTotal = 0;
+    sorte = 0;
+    sorteAdversaria = 0;
+    produtosMax = 3;
+    ouroMax = 3;
+    conquistaIlhas = false;
+    fazerTrocas = false;
+    resistenciaBonus = 0;
+    nTerrConq = 1;
+}
+
 //trata de inicializar as coisas antes do jogo
 void Interacao::comeca_jogo() {
     cout << "Entrou no jogo" << endl;
     iniciaTecs();
     escrita_menus();
+    resetVar();
     jogo.clear();
     tecs.clear();
     ultimoTerr.clear();

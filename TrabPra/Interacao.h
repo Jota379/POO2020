@@ -35,7 +35,6 @@ public:
 	void FaseCUMT();
 	void FaseFE();
 	void escrita_menus();
-	//void conquistar();
 	void ListarTudo();
 	void ListarTerr(string nomeaux);
 	void ListarConquistados();
@@ -52,6 +51,7 @@ public:
 	void recolheTudo();
 	int buscaConq();
 	int buscaConqPont();
+	void resetVar();
 	Interacao();
 	~Interacao();
 	
