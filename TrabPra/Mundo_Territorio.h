@@ -46,8 +46,6 @@ class Territorio_Inicial : public Mundo_Territorios { // Define um tipo de terri
 public:
     Territorio_Inicial(string nome = "TerritorioInicial", int resistencia = 9, int produtos = 1, int ouro = 1, int pontos_vitoria = 0, bool conquistado = true); //construtor com parametros
 
-    ~Territorio_Inicial() { // destrutor
-    };
 
 
 

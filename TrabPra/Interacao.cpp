@@ -12,10 +12,11 @@
 
 using namespace std;
 
-//esta função dá um valor aleatorio entre 1 a 3 para definir a força militar inicial
+//esta função dá um valor aleatorio entre 1 a 3 para definir a força militar inicial e cria o objeto Interacao
 Interacao::Interacao(){
     força_militar = rand() % 4;
 }
+
 Interacao::~Interacao()
 {
     cout << "Destruir o jogo" << endl;
@@ -95,6 +96,7 @@ void Interacao::mostra_comandos_FE() {
 
 //listar todos os territorios
 void Interacao::ListarTudo() {
+    cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) // listar todos os territórios
         oss << jogo[i]->getAsString();
@@ -104,6 +106,7 @@ void Interacao::ListarTudo() {
 
 //listar territorio especifico
 void Interacao::ListarTerr(string nomeaux) {
+    cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) {// listar todos os territórios com um certo nome
         if(nomeaux == jogo[i]->getNometerritorio())
@@ -114,6 +117,7 @@ void Interacao::ListarTerr(string nomeaux) {
 
 //listar territorios conquistados
 void Interacao::ListarConquistados() {
+    cout << "NOME\tRESISTENCIA\tPRODUTOS\tOURO\tPONTOS VITORIA\tCONQUISTADO" << endl;
     ostringstream oss;
     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios que foram conquistados
         if (jogo[i]->getConquista() == true)
@@ -234,7 +238,7 @@ void Interacao::FaseCP(){
                     bufi >> nomeTipoDebug;
                     bool existeDebug = false;
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                        if (nomeTipoDebug == jogo[i]->getNometerritorio()) {
                             existeDebug = true;
                             if (jogo[i]->getConquista() == false)
                             {
@@ -245,9 +249,9 @@ void Interacao::FaseCP(){
                                 cout << "Territorio já conquistado" << endl;
                             }
                         }
-                        if (!existeDebug)
-                            cout << "Territorio não existe" << endl;
                     }
+                    if (!existeDebug)
+                        cout << "Territorio não existe" << endl;
                 }
             }
 
@@ -472,7 +476,7 @@ void Interacao::FaseRP(){
                     bufi >> nomeTipoDebug;
                     bool existeDebug = false;
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                        if (nomeTipoDebug == jogo[i]->getNometerritorio()) {
                             existeDebug = true;
                             if (jogo[i]->getConquista() == false)
                             {
@@ -483,9 +487,10 @@ void Interacao::FaseRP(){
                                 cout << "Territorio já conquistado" << endl;
                             }
                         }
-                        if (!existeDebug)
-                            cout << "Territorio não existe" << endl;
+                        
                     }
+                    if (!existeDebug)
+                        cout << "Territorio não existe" << endl;
                 }
             }
 
@@ -814,7 +819,7 @@ void Interacao::FaseCUMT(){
                     bufi >> nomeTipoDebug;
                     bool existeDebug = false;
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                        if (nomeTipoDebug == jogo[i]->getNometerritorio()) {
                             existeDebug = true;
                             if (jogo[i]->getConquista() == false)
                             {
@@ -825,9 +830,9 @@ void Interacao::FaseCUMT(){
                                 cout << "Territorio já conquistado" << endl;
                             }
                         }
-                        if (!existeDebug)
-                            cout << "Territorio não existe" << endl;
                     }
+                    if (!existeDebug)
+                        cout << "Territorio não existe" << endl;
                 }
             }
 
@@ -1008,7 +1013,7 @@ void Interacao::FaseFE()
                     bufi >> nomeTipoDebug;
                     bool existeDebug = false;
                     for (unsigned int i = 0; i < jogo.size(); i++) { // listar todos os territórios
-                        if (nomeTerritorio == jogo[i]->getNometerritorio()) {
+                        if (nomeTipoDebug == jogo[i]->getNometerritorio()) {
                             existeDebug = true;
                             if (jogo[i]->getConquista() == false)
                             {
@@ -1019,9 +1024,10 @@ void Interacao::FaseFE()
                                 cout << "Territorio já conquistado" << endl;
                             }
                         }
-                        if (!existeDebug)
-                            cout << "Territorio não existe" << endl;
+                        
                     }
+                    if (!existeDebug)
+                        cout << "Territorio não existe" << endl;
                 }
             }
 
@@ -1209,12 +1215,14 @@ void Interacao::aplicaEvento(){
 
 //Mostra os dados do Jogador e sua ultima sorte 
 void Interacao::status(){
+    cout << endl;
     cout << "ANO: " << ano << endl;
     cout << "TURNO: " << turno << endl;
     cout << "FORCA MILITAR: " << força_militar << endl;
     cout << "ULTIMA SORTE: " << sorte << endl;
     cout << "OURO: " << ouroTotal << endl;
     cout << "PRODUTOS: " << produtosTotal << endl;
+    cout << endl;
 }
 
 //inicia as tecnologias
@@ -1328,7 +1336,7 @@ void Interacao::escrita_menus() {
         //}
     }
     if (buscaConq() < 1)
-        cout << "Fantastico conseguiste a unica maneira de perderes o jogo" << endl << "===========GAMEOVER==========" << endl;
+        cout << "Fantastico conseguiste a unica maneira de perder o jogo" << endl << "===========GAMEOVER==========" << endl;
     else{
         int pTerritorios, pImpSup=0, pTecs=0, pBonCien=0;
         pTerritorios = buscaConqPont();
@@ -1354,6 +1362,9 @@ void Interacao::comeca_jogo() {
     cout << "Entrou no jogo" << endl;
     iniciaTecs();
     escrita_menus();
+    jogo.clear();
+    tecs.clear();
+    ultimoTerr.clear();
     
 }
 

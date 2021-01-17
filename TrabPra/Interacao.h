@@ -12,8 +12,8 @@ private:
 	int força_militar;
 	int força_militar_max = 3;
 	int turno = 1, ano = 1;
-	int ouroTotal = 2;
-	int produtosTotal = 3;
+	int ouroTotal = 0;
+	int produtosTotal = 0;
 	int sorte = 0;
 	int sorteAdversaria = 0;
 	int produtosMax = 3;
